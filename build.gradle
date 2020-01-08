@@ -24,6 +24,11 @@ allprojects {
     }
 }
 
+task publishOnMaven {
+    dependsOn ':treedatastructure:publishReleasePublicationToMavencentralRepository'
+    dependsOn 'closeAndReleaseRepository'
+}
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
