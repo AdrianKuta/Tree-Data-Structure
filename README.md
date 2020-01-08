@@ -1,6 +1,6 @@
 # Tree (Data Structure)
 [![maven](https://img.shields.io/maven-central/v/com.github.adriankuta/tree-structure?style=plastic)](https://mvnrepository.com/artifact/com.github.adriankuta/tree-structure)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/AdrianKuta/Design-Patterns-Kotlin/blob/master/LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=plastic)](https://github.com/AdrianKuta/Design-Patterns-Kotlin/blob/master/LICENSE)
 
 Simple implementation to store object in tree structure. Method `toString()` is overrided to provide nice tree view in logs.
 
