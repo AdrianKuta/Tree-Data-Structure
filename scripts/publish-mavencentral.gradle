@@ -100,7 +100,7 @@ publishing {
         maven {
             // This is an arbitrary name, you may also use "mavencentral" or
             // any other name that's descriptive for you
-            name = "mavencentral"
+            name = "sonatype"
 
             def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
             def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
