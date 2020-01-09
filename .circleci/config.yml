@@ -55,9 +55,7 @@ jobs:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
           command: |
-            ls
             mkdir maven
-            ls
             echo ${GPG_KEY_CONTENTS} | base64 -d --ignore-garbage > maven/secret.gpg
       - run:
           name: Staging
