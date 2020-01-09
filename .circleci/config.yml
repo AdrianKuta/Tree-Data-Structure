@@ -55,8 +55,8 @@ jobs:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
           command: |
-            mkdir maven
-            echo ${GPG_KEY_CONTENTS} | base64 -d --ignore-garbage > maven/secret.gpg
+            mkdir treedatastructure/maven
+            echo ${GPG_KEY_CONTENTS} | base64 -d --ignore-garbage > treedatastructure/maven/secret.gpg
       - run:
           name: Staging
           command: ./gradlew :treedatastructure:publishReleasePublicationToSonatypeRepository
