@@ -53,20 +53,24 @@ jobs:
       - checkout
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run:
+          command: echo $GPG_KEY_CONTENTS | base64 -d > /secret.gpg
+      - run:
+          name: Staging
+          command: ./gradlew treedatastructure:publishReleasePublicationToSonatypeRepository
 
 workflows:
   version: 2.1
   build-and-deploy:
     jobs:
       - build
-      - tests:
-          requires:
-            - build
       - deploy:
           requires:
-            - build
-            - tests
+            - buil
           filters:
+            tags:
+              only:
+                - /.*/
             branches:
               only:
                 - release
