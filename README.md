@@ -1,5 +1,5 @@
 # Tree (Data Structure)
-[![maven](https://img.shields.io/maven-central/v/com.github.adriankuta/tree-structure?style=plastic)](https://mvnrepository.com/artifact/com.github.adriankuta/tree-structure)
+[![maven](https://img.shields.io/maven-central/v/com.github.adriankuta/tree-structure?style=plastic)](https://search.maven.org/artifact/com.github.adriankuta/tree-structure)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=plastic)](https://github.com/AdrianKuta/Design-Patterns-Kotlin/blob/master/LICENSE)
 [![CircleCI](https://img.shields.io/circleci/build/github/AdrianKuta/Tree-Data-Structure/master?label=CircleCI&style=plastic)](https://circleci.com/gh/AdrianKuta/Tree-Data-Structure)
 
