@@ -79,8 +79,4 @@ workflows:
           filters:
             tags:
               only:
-                - /.*/
-            branches:
-              only:
-                - release
-                - master
+                - /v[0-9]{1,3}\.[0-9]{1,3}\.?[0-9]{0,3}/
