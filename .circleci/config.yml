@@ -18,7 +18,7 @@ jobs:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
 
-  test:
+  tests:
     working_directory: ~/code
     docker:
       - image: circleci/android:api-29
