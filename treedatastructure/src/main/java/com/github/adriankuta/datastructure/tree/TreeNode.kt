@@ -40,10 +40,6 @@ class TreeNode<T>(val value: T) {
         return childrenMaxDepth + 1
     }
 
-    fun allItems(): List<T> {
-        return children.map { value }
-    }
-
     override fun toString(): String {
         val stringBuilder = StringBuilder()
         print(stringBuilder, "", "")
