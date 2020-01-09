@@ -54,9 +54,9 @@ jobs:
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
-          command: chown -R $USER:$USER .
-      - run:
-          command: cat $GPG_KEY_CONTENTS | base64 -d > /secret.gpg
+          command: |
+            mkdir /secret.gpg
+            echo ${GPG_KEY_CONTENTS} | base64 -d --ignore-garbage > /secret.gpg
       - run:
           name: Staging
           command: ./gradlew treedatastructure:publishReleasePublicationToSonatypeRepository
