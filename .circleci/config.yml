@@ -56,8 +56,9 @@ jobs:
       - run:
           command: |
             ls
-            mkdir secret.gpg
-            echo ${GPG_KEY_CONTENTS} | base64 -d --ignore-garbage > secret.gpg
+            mkdir maven
+            ls
+            echo ${GPG_KEY_CONTENTS} | base64 -d --ignore-garbage > maven/secret.gpg
       - run:
           name: Staging
           command: ./gradlew treedatastructure:publishReleasePublicationToSonatypeRepository
