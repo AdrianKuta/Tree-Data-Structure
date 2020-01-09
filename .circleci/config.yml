@@ -54,12 +54,19 @@ jobs:
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
+          name: Build Library
+          command: ./gradlew :treedatastructure:assembleRelease
+      - run:
+          name: Export key
           command: |
             mkdir treedatastructure/maven
             echo ${GPG_KEY_CONTENTS} | base64 -d --ignore-garbage > treedatastructure/maven/secret.gpg
       - run:
           name: Staging
           command: ./gradlew :treedatastructure:publishReleasePublicationToSonatypeRepository
+      - run:
+          name: Release Library
+          command: ./gradlew closeAndReleaseRepository
 
 workflows:
   version: 2.1
