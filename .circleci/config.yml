@@ -56,7 +56,7 @@ jobs:
       - run:
           command: chown -R $USER:$USER .
       - run:
-          command: echo $GPG_KEY_CONTENTS | base64 -d > /secret.gpg
+          command: cat $GPG_KEY_CONTENTS | base64 -d > /secret.gpg
       - run:
           name: Staging
           command: ./gradlew treedatastructure:publishReleasePublicationToSonatypeRepository
