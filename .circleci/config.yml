@@ -73,6 +73,9 @@ workflows:
   build-and-deploy:
     jobs:
       - build
+          filters:  # required since `deploy` has tag filters AND requires `build`
+            tags:
+              only: /.*/
       - deploy:
           requires:
             - build
