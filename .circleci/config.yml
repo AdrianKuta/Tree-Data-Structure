@@ -72,7 +72,7 @@ workflows:
   version: 2.1
   build-and-deploy:
     jobs:
-      - build
+      - build:
           filters:  # required since `deploy` has tag filters AND requires `build`
             tags:
               only: /.*/
