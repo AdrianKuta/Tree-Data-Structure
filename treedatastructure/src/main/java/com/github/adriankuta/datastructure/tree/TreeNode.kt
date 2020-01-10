@@ -1,6 +1,6 @@
 package com.github.adriankuta.datastructure.tree
 
-class TreeNode<T>(val value: T) {
+open class TreeNode<T>(val value: T) {
 
     private var parent: TreeNode<T>? = null
     private val children = mutableListOf<TreeNode<T>>()
