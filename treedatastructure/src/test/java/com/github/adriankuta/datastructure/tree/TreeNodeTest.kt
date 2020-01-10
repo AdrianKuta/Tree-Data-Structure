@@ -114,16 +114,31 @@ class TreeNodeTest {
 
     @Test
     fun kotlinExtTest() {
-        val root = treeNode("World") {
+        val root = TreeNode("World")
+        val northA = TreeNode("North America")
+        val europe = TreeNode("Europe")
+        root.addChild(northA)
+        root.addChild(europe)
+
+        val usa = TreeNode("USA")
+        northA.addChild(usa)
+
+        val poland = TreeNode("Poland")
+        val france = TreeNode("France")
+        europe.addChild(poland)
+        europe.addChild(france)
+
+        val rootExt = treeNode("World") {
             treeNode("North America") {
                 treeNode("USA")
             }
             treeNode("Europe") {
                 treeNode("Poland")
-                treeNode("Germany")
+                treeNode("France")
             }
         }
         println(root)
+        assertEquals(root.toString(), rootExt.toString())
     }
 
 

@@ -8,40 +8,46 @@ Simple implementation to store object in tree structure. Method `toString()` is 
 ## Usage
 
 ```kotlin
-val root = TreeNode<String>("Root")
-val beveragesNode = TreeNode<String>("Beverages")
-val curdNode = TreeNode<String>("Curd")
-root.addChild(beveragesNode)
-root.addChild(curdNode)
+val root = TreeNode("World")
+val northA = TreeNode("North America")
+val europe = TreeNode("Europe")
+root.addChild(northA)
+root.addChild(europe)
 
-val teaNode = TreeNode<String>("tea")
-val coffeeNode = TreeNode<String>("coffee")
-val milkShakeNode = TreeNode<String>("Milk Shake")
-beveragesNode.addChild(teaNode)
-beveragesNode.addChild(coffeeNode)
-beveragesNode.addChild(milkShakeNode)
+val usa = TreeNode("USA")
+northA.addChild(usa)
 
-val gingerTeaNode = TreeNode<String>("ginger tea")
-val normalTeaNode = TreeNode<String>("normal tea")
-teaNode.addChild(gingerTeaNode)
-teaNode.addChild(normalTeaNode)
-
-val yogurtNode = TreeNode<String>("yogurt")
-val lassiNode = TreeNode<String>("lassi")
-curdNode.addChild(yogurtNode)
-curdNode.addChild(lassiNode)
-
+val poland = TreeNode("Poland")
+val france = TreeNode("France")
+europe.addChild(poland)
+europe.addChild(france)
 println(root)
-System.out.println("Remove: ${curdNode.value}")
-root.removeChild(curdNode)
-System.out.println("Remove: ${gingerTeaNode.value}")
-root.removeChild(gingerTeaNode)
-println(root)
+```
+
+Or in more Kotlin like style:
+
+```kotlin
+val root = treeNode("World") {
+            treeNode("North America") {
+                treeNode("USA")
+            }
+            treeNode("Europe") {
+                treeNode("Poland")
+                treeNode("Germany")
+            }
+        }
 ```
 
 *Output:*
 
-<img src="https://github.com/AdrianKuta/Tree-Collection/blob/master/images/console_output.png" width=400>
+```
+World
+├── North America
+│   └── USA
+└── Europe
+    ├── Poland
+    └── France
+```
 
 
 ## Download
