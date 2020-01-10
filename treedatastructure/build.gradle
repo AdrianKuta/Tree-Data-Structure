@@ -15,7 +15,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 29
         versionCode 1
-        versionName "1.0.4"
+        versionName "1.0.5"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -31,7 +31,6 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.1.0'
