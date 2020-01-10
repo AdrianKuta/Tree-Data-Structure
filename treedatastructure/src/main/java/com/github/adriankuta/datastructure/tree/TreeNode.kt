@@ -26,7 +26,8 @@ open class TreeNode<T>(val value: T) : Iterable<TreeNode<T>>, ChildDeclarationIn
         _children.add(child)
     }
 
-    override fun child(value: T, childDeclaration: ChildDeclaration<T>?) {
+    @JvmSynthetic
+    override fun treeNode(value: T, childDeclaration: ChildDeclaration<T>?) {
         val newChild = TreeNode(value)
         if(childDeclaration != null)
             newChild.childDeclaration()

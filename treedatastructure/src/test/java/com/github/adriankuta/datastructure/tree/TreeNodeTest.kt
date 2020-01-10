@@ -115,15 +115,14 @@ class TreeNodeTest {
     @Test
     fun kotlinExtTest() {
         val root = treeNode("World") {
-            child("North America") {
-                child("USA")
+            treeNode("North America") {
+                treeNode("USA")
             }
-            child("Europe") {
-                child("Poland")
-                child("Germany")
+            treeNode("Europe") {
+                treeNode("Poland")
+                treeNode("Germany")
             }
         }
-
         println(root)
     }
 
