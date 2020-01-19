@@ -7,6 +7,7 @@ Simple implementation to store object in tree structure. Method `toString()` is 
 
 ## Usage
 
+**Kotlin**
 ```kotlin
 val root = TreeNode("World")
 val northA = TreeNode("North America")
@@ -24,18 +25,37 @@ europe.addChild(france)
 println(root)
 ```
 
-Or in more Kotlin like style:
+**Pretty Kotlin**
 
 ```kotlin
-val root = treeNode("World") {
-            treeNode("North America") {
-                treeNode("USA")
-            }
-            treeNode("Europe") {
-                treeNode("Poland")
-                treeNode("Germany")
-            }
+val root =
+    tree("World") {
+        child("North America") {
+            child("USA")
         }
+        child("Europe") {
+            child("Poland")
+            child("Germany")
+        }
+    }
+```
+
+**Java**
+```java
+TreeNode<String> root = new TreeNode<>("World");
+TreeNode<String> northA = new TreeNode<>("North America");
+TreeNode<String> europe = new TreeNode<>("Europe");
+root.addChild(northA);
+root.addChild(europe);
+
+TreeNode<String> usa = new TreeNode<>("USA");
+northA.addChild(usa);
+
+TreeNode<String> poland = new TreeNode<>("Poland");
+TreeNode<String> france = new TreeNode<>("France");
+europe.addChild(poland);
+europe.addChild(france);
+System.out.println(root);
 ```
 
 *Output:*

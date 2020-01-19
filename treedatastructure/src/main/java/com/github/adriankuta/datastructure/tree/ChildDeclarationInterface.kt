@@ -5,17 +5,17 @@ interface ChildDeclarationInterface<T> {
     /**
      * This method is used to easily create child in node.
      * ```
-     * val root = treeNode("World") {
-     *     treeNode("North America") {
-     *         treeNode("USA")
+     * val root = tree("World") {
+     *     child("North America") {
+     *         child("USA")
      *     }
-     *     treeNode("Europe") {
-     *         treeNode("Poland")
-     *         treeNode("Germany")
+     *     child("Europe") {
+     *         child("Poland")
+     *         child("Germany")
      *     }
      * }
      * ```
      */
     @JvmSynthetic
-    fun treeNode(value: T, childDeclaration: ChildDeclaration<T>? = null)
+    fun child(value: T, childDeclaration: ChildDeclaration<T>? = null)
 }

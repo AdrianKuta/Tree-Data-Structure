@@ -5,13 +5,14 @@ typealias ChildDeclaration<T> = ChildDeclarationInterface<T>.() -> Unit
 /**
  * This method can be used to initialize new tree.
  * ```
- * val root = treeNode("World") { ... }
+ * val root = tree("World") { ... }
  * ```
- * @see [ChildDeclarationInterface.treeNode]
+ * @param root Root element of new tree.
+ * @see [ChildDeclarationInterface.child]
  */
 @JvmSynthetic
-inline fun<reified T> treeNode(value: T, childDeclaration: ChildDeclaration<T>): TreeNode<T> {
-    val treeNode = TreeNode(value)
+inline fun<reified T> tree(root: T, childDeclaration: ChildDeclaration<T>): TreeNode<T> {
+    val treeNode = TreeNode(root)
     treeNode.childDeclaration()
     return treeNode
 }
