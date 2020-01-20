@@ -22,7 +22,7 @@ val poland = TreeNode("Poland")
 val france = TreeNode("France")
 europe.addChild(poland)
 europe.addChild(france)
-println(root)
+println(root.prettyString())
 ```
 
 **Pretty Kotlin**
@@ -55,7 +55,7 @@ TreeNode<String> poland = new TreeNode<>("Poland");
 TreeNode<String> france = new TreeNode<>("France");
 europe.addChild(poland);
 europe.addChild(france);
-System.out.println(root);
+System.out.println(root.prettyString());
 ```
 
 *Output:*

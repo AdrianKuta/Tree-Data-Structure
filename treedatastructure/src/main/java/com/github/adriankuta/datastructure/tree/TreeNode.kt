@@ -91,6 +91,10 @@ open class TreeNode<T>(val value: T) : Iterable<TreeNode<T>>, ChildDeclarationIn
     }
 
     override fun toString(): String {
+        return value.toString()
+    }
+
+    fun prettyString(): String {
         val stringBuilder = StringBuilder()
         print(stringBuilder, "", "")
         return stringBuilder.toString()
