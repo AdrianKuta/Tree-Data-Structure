@@ -128,18 +128,31 @@ class TreeNodeTest {
         europe.addChild(poland)
         europe.addChild(france)
 
-        val rootExt = treeNode("World") {
-            treeNode("North America") {
-                treeNode("USA")
+        val rootExt = tree("World") {
+            child("North America") {
+                child("USA")
             }
-            treeNode("Europe") {
-                treeNode("Poland")
-                treeNode("France")
+            child("Europe") {
+                child("Poland")
+                child("France")
             }
         }
-        println(root)
-        assertEquals(root.toString(), rootExt.toString())
+        assertEquals(root.prettyString(), rootExt.prettyString())
     }
 
+//    @Test
+//    fun getVisibleNodes() {
+//        val root = tree("World") {
+//            child("Level 1") {
+//                child("Level 2") {
+//                    child("Level 3") {
+//                        child("Level 4")
+//                    }
+//                }
+//            }
+//        }
+//
+//        print(root.prettyString())
+//    }
 
 }
