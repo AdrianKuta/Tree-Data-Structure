@@ -15,7 +15,8 @@ interface ChildDeclarationInterface<T> {
      *     }
      * }
      * ```
+     * @return New created TreeNode.
      */
     @JvmSynthetic
-    fun child(value: T, childDeclaration: ChildDeclaration<T>? = null)
+    fun child(value: T, childDeclaration: ChildDeclaration<T>? = null): TreeNode<T>
 }

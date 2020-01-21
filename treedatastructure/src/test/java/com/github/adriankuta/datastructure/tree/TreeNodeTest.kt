@@ -139,20 +139,4 @@ class TreeNodeTest {
         }
         assertEquals(root.prettyString(), rootExt.prettyString())
     }
-
-//    @Test
-//    fun getVisibleNodes() {
-//        val root = tree("World") {
-//            child("Level 1") {
-//                child("Level 2") {
-//                    child("Level 3") {
-//                        child("Level 4")
-//                    }
-//                }
-//            }
-//        }
-//
-//        print(root.prettyString())
-//    }
-
 }
