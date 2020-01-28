@@ -3,7 +3,7 @@
 [![License: MIT](https://img.shields.io/github/license/AdrianKuta/Tree-Data-Structure?style=plastic)](https://github.com/AdrianKuta/Design-Patterns-Kotlin/blob/master/LICENSE)
 [![CircleCI](https://img.shields.io/circleci/build/github/AdrianKuta/Tree-Data-Structure/master?label=CircleCI&style=plastic&logo=circleci)](https://circleci.com/gh/AdrianKuta/Tree-Data-Structure)
 
-Simple implementation to store object in tree structure. Method `toString()` is overrided to provide nice tree view in logs.
+Simple implementation to store object in tree structure.
 
 ## Usage
 
