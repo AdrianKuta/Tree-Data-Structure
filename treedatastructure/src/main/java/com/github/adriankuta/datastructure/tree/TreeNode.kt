@@ -54,7 +54,7 @@ open class TreeNode<T>(val value: T) : Iterable<TreeNode<T>>, ChildDeclarationIn
         if (_children.isEmpty())
             return 0
         return _children.size +
-                _children.sumBy { it.nodeCount() }
+                _children.sumOf { it.nodeCount() }
     }
 
     /**
@@ -62,7 +62,7 @@ open class TreeNode<T>(val value: T) : Iterable<TreeNode<T>>, ChildDeclarationIn
      */
     fun height(): Int {
         val childrenMaxDepth = _children.map { it.height() }
-            .max()
+            .maxOrNull()
             ?: -1 // -1 because this method counts nodes, and edges are always one less then nodes.
         return childrenMaxDepth + 1
     }
@@ -72,14 +72,14 @@ open class TreeNode<T>(val value: T) : Iterable<TreeNode<T>>, ChildDeclarationIn
      * @return The distance between current node and the root.
      */
     fun depth(): Int {
-        var _depth = 0
+        var depth = 0
         var tempParent = parent
 
         while (tempParent != null) {
-            _depth++
+            depth++
             tempParent = tempParent.parent
         }
-        return _depth
+        return depth
     }
 
     /**

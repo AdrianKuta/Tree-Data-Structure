@@ -10,26 +10,26 @@ class TreeNodeTest {
 
     @Test
     fun removeNodeTest() {
-        val root = TreeNode<String>("Root")
-        val beveragesNode = TreeNode<String>("Beverages")
-        val curdNode = TreeNode<String>("Curd")
+        val root = TreeNode("Root")
+        val beveragesNode = TreeNode("Beverages")
+        val curdNode = TreeNode("Curd")
         root.addChild(beveragesNode)
         root.addChild(curdNode)
 
-        val teaNode = TreeNode<String>("tea")
-        val coffeeNode = TreeNode<String>("coffee")
-        val milkShakeNode = TreeNode<String>("Milk Shake")
+        val teaNode = TreeNode("tea")
+        val coffeeNode = TreeNode("coffee")
+        val milkShakeNode = TreeNode("Milk Shake")
         beveragesNode.addChild(teaNode)
         beveragesNode.addChild(coffeeNode)
         beveragesNode.addChild(milkShakeNode)
 
-        val gingerTeaNode = TreeNode<String>("ginger tea")
-        val normalTeaNode = TreeNode<String>("normal tea")
+        val gingerTeaNode = TreeNode("ginger tea")
+        val normalTeaNode = TreeNode("normal tea")
         teaNode.addChild(gingerTeaNode)
         teaNode.addChild(normalTeaNode)
 
-        val yogurtNode = TreeNode<String>("yogurt")
-        val lassiNode = TreeNode<String>("lassi")
+        val yogurtNode = TreeNode("yogurt")
+        val lassiNode = TreeNode("lassi")
         curdNode.addChild(yogurtNode)
         curdNode.addChild(lassiNode)
 
@@ -46,9 +46,9 @@ class TreeNodeTest {
                     "    └── lassi\n", root.toString()
         )
 
-        System.out.println("Remove: ${curdNode.value}")
+        println("Remove: ${curdNode.value}")
         root.removeChild(curdNode)
-        System.out.println("Remove: ${gingerTeaNode.value}")
+        println("Remove: ${gingerTeaNode.value}")
         root.removeChild(gingerTeaNode)
         assertEquals(
             "Root\n" +
@@ -62,26 +62,26 @@ class TreeNodeTest {
 
     @Test
     fun clearTest() {
-        val root = TreeNode<String>("Root")
-        val beveragesNode = TreeNode<String>("Beverages")
-        val curdNode = TreeNode<String>("Curd")
+        val root = TreeNode("Root")
+        val beveragesNode = TreeNode("Beverages")
+        val curdNode = TreeNode("Curd")
         root.addChild(beveragesNode)
         root.addChild(curdNode)
 
-        val teaNode = TreeNode<String>("tea")
-        val coffeeNode = TreeNode<String>("coffee")
-        val milkShakeNode = TreeNode<String>("Milk Shake")
+        val teaNode = TreeNode("tea")
+        val coffeeNode = TreeNode("coffee")
+        val milkShakeNode = TreeNode("Milk Shake")
         beveragesNode.addChild(teaNode)
         beveragesNode.addChild(coffeeNode)
         beveragesNode.addChild(milkShakeNode)
 
-        val gingerTeaNode = TreeNode<String>("ginger tea")
-        val normalTeaNode = TreeNode<String>("normal tea")
+        val gingerTeaNode = TreeNode("ginger tea")
+        val normalTeaNode = TreeNode("normal tea")
         teaNode.addChild(gingerTeaNode)
         teaNode.addChild(normalTeaNode)
 
-        val yogurtNode = TreeNode<String>("yogurt")
-        val lassiNode = TreeNode<String>("lassi")
+        val yogurtNode = TreeNode("yogurt")
+        val lassiNode = TreeNode("lassi")
         curdNode.addChild(yogurtNode)
         curdNode.addChild(lassiNode)
 
