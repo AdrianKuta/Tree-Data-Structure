@@ -1,6 +1,9 @@
-name: Pull request
+name: Test
 
-on: pull_request
+on:
+  pull_request:
+    branches:
+      - master
 
 jobs:
   build:
