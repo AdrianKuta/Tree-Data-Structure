@@ -1,4 +1,4 @@
-name: Publish
+name: Push
 
 on: [push, pull_request]
 
@@ -17,7 +17,7 @@ jobs:
 
         # Builds the release artifacts of the library
       - name: Build
-        run: ./gradlew :assembleRelease
+        run: ./gradlew assemble
 
         # Generates other artifacts (javadocJar is optional)
       - name: Source jar and dokka
