@@ -4,7 +4,7 @@ on: pull_request
 
 jobs:
   build:
-    name: Build project
+    name: Check project build
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
