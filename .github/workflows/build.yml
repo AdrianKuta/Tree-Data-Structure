@@ -1,10 +1,10 @@
-name: Push
+name: Build
 
-on: [push, pull_request]
+on: pull_request
 
 jobs:
   build:
-    name: Build project
+    name: Check project build
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
