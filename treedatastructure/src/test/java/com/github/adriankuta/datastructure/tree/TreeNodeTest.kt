@@ -43,7 +43,8 @@ class TreeNodeTest {
                     "│   └── Milk Shake\n" +
                     "└── Curd\n" +
                     "    ├── yogurt\n" +
-                    "    └── lassi\n", root.toString()
+                    "    └── lassi\n",
+            root.prettyString()
         )
 
         println("Remove: ${curdNode.value}")
@@ -56,7 +57,8 @@ class TreeNodeTest {
                     "    ├── tea\n" +
                     "    │   └── normal tea\n" +
                     "    ├── coffee\n" +
-                    "    └── Milk Shake\n", root.toString()
+                    "    └── Milk Shake\n",
+            root.prettyString()
         )
     }
 

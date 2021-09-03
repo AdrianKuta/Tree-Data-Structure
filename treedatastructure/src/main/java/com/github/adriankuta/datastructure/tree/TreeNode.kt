@@ -41,6 +41,7 @@ open class TreeNode<T>(val value: T) : Iterable<TreeNode<T>>, ChildDeclarationIn
      * @return `true` if the node has been successfully removed; `false` if it was not present in the tree.
      */
     fun removeChild(child: TreeNode<T>): Boolean {
+        println(child.value)
         val removed = child._parent?._children?.remove(child)
         child._parent = null
         return removed ?: false
