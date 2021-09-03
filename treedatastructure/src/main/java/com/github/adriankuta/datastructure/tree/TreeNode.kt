@@ -137,5 +137,5 @@ open class TreeNode<T>(val value: T) : Iterable<TreeNode<T>>, ChildDeclarationIn
      * Output: 1 2 5 10 6 11 12 13 3 4 7 8 9
      * ```
      */
-    override fun iterator(): Iterator<TreeNode<T>> = TreeNodeIterator(this)
+    override fun iterator(): Iterator<TreeNode<T>> = PreOrderTreeIterator(this)
 }
