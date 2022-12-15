@@ -5,9 +5,15 @@ on:
     # We'll run this workflow when a new GitHub release is created
     types: [released]
 
+
 jobs:
+  test:
+    uses: ./.github/workflows/test.yml
+    secrets: inherit
+
   publish:
     name: Publish Production
+    environment: production
     runs-on: ubuntu-latest
     steps:
       - name: Check out code

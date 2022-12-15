@@ -1,15 +1,16 @@
 name: Publish Snapshot
 
 on:
-  workflow_run:
-    workflows: [Test]
-    branches-ignore: [main]
-    types:
-      - completed
+  push:
+    branches: [master, '14-**']
 
 jobs:
+  test:
+    uses: ./.github/workflows/test.yml
+    secrets: inherit
+
   publish:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    needs: test
     name: Publish Snapshot
     runs-on: ubuntu-latest
     steps:
