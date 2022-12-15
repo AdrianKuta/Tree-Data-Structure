@@ -6,7 +6,7 @@ on:
 
 jobs:
   test:
-    uses: ./.github/workflows/test.yml@78096b78b4aa54229b1ece8ef408bdf73abf4a8e
+    uses: ./.github/workflows/test.yml
     secrets: inherit
 
   publish:
