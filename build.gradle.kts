@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.cli.common.toBooleanLenient
 import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
@@ -8,7 +9,7 @@ plugins {
 
 val PUBLISH_GROUP_ID = "com.github.adriankuta"
 val PUBLISH_ARTIFACT_ID = "tree-structure"
-val PUBLISH_VERSION = "3.0-SNAPSHOT"
+val PUBLISH_VERSION = "3.0"
 
 val secretFile = File(rootProject.rootDir, "local.properties")
 if (secretFile.exists()) {
@@ -26,10 +27,12 @@ if (secretFile.exists()) {
     project.ext["signingKeyId"] = System.getenv("SIGNING_KEY_ID")
     project.ext["signingPassword"] = System.getenv("SIGNING_PASSWORD")
     project.ext["signingKey"] = System.getenv("SIGNING_KEY")
+    project.ext["snapshot"] = System.getenv("SNAPSHOT")
 }
+val snapshot: String? by project
 
 group = PUBLISH_GROUP_ID
-version = PUBLISH_VERSION
+version = if (snapshot.toBoolean()) "$PUBLISH_VERSION-SNAPSHOT" else PUBLISH_VERSION
 
 publishing {
     publications {
