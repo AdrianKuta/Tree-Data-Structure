@@ -6,10 +6,10 @@ on:
       - master
 
 jobs:
+  call-test-workflow:
+    uses: ./.github/workflows/test.yml
+    secrets: inherit
   publish:
-    call-test-workflow:
-      uses: ./.github/workflows/test.yml
-      secrets: inherit
     name: Publish Snapshot
     runs-on: ubuntu-latest
     steps:
