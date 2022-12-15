@@ -1,4 +1,4 @@
-name: Publish
+name: Publish Snapshot
 
 on:
   push:
@@ -7,7 +7,10 @@ on:
 
 jobs:
   publish:
-    name: Publish to Sonatype repository
+    call-test-workflow:
+      uses: ./.github/workflows/test.yml
+      secrets: inherit
+    name: Publish Snapshot
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -19,7 +22,7 @@ jobs:
           java-version: 11
 
         # Runs upload, and then closes & releases the repository
-      - name: Publish to MavenCentral
+      - name: Publish to snapshot to Sonatype
         run: ./gradlew publish --max-workers 1
         env:
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
@@ -28,4 +31,4 @@ jobs:
           SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
           SONATYPE_STAGING_PROFILE_ID: ${{ secrets.SONATYPE_STAGING_PROFILE_ID }}
-          SNAPSHOT: true
+          SNAPSHOT: false

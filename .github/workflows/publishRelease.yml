@@ -7,7 +7,7 @@ on:
 
 jobs:
   publish:
-    name: Publish to Sonatype repository
+    name: Publish Production
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
