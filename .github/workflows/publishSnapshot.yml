@@ -10,7 +10,7 @@ jobs:
     secrets: inherit
 
   publish:
-    needs: jobTest
+    needs: test
     name: Publish Snapshot
     runs-on: ubuntu-latest
     steps:
