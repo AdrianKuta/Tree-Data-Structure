@@ -3,7 +3,6 @@ name: Publish Snapshot
 on:
   workflow_run:
     workflows: ["Test"]
-    branches-ignore: [main]
     types:
       - completed
 
