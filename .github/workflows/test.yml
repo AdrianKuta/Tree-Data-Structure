@@ -4,7 +4,9 @@ on:
   push:
     branches-ignore: [master]
   workflow_call:
-    branches: [master]
+    branches:
+      - master
+      - '14-**'
 
 jobs:
   build:
