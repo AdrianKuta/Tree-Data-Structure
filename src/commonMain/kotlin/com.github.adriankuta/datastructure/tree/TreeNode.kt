@@ -1,10 +1,6 @@
-package com.github.adriankuta
+package com.github.adriankuta.datastructure.tree
 
-import com.github.adriankuta.iterators.LevelOrderTreeIterator
-import com.github.adriankuta.iterators.PostOrderTreeIterator
-import com.github.adriankuta.iterators.PreOrderTreeIterator
-import com.github.adriankuta.iterators.TreeNodeIterators
-import com.github.adriankuta.iterators.TreeNodeIterators.*
+import com.github.adriankuta.datastructure.tree.TreeNodeIterators.*
 import kotlin.jvm.JvmSynthetic
 
 open class TreeNode<T>(val value: T) : Iterable<TreeNode<T>>, ChildDeclarationInterface<T> {

@@ -1,4 +1,4 @@
-package com.github.adriankuta
+package com.github.adriankuta.datastructure.tree
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
