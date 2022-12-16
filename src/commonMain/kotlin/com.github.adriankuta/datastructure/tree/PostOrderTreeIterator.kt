@@ -1,6 +1,4 @@
-package com.github.adriankuta.iterators
-
-import com.github.adriankuta.TreeNode
+package com.github.adriankuta.datastructure.tree
 
 /**
  * Tree is iterated by using `Post-order Traversal Algorithm"

@@ -1,4 +1,4 @@
-package com.github.adriankuta.iterators
+package com.github.adriankuta.datastructure.tree
 
 /**
  * @see PreOrder

@@ -1,6 +1,5 @@
-package com.github.adriankuta
+package com.github.adriankuta.datastructure.tree
 
-import com.github.adriankuta.iterators.TreeNodeIterators
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
