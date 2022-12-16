@@ -12,6 +12,7 @@ jobs:
     secrets: inherit
 
   publish:
+    needs: test
     name: Publish Production
     environment: production
     runs-on: ubuntu-latest
