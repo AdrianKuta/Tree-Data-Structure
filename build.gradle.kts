@@ -1,8 +1,8 @@
-import org.jetbrains.kotlin.cli.common.toBooleanLenient
 import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
     kotlin("multiplatform") version "1.7.20"
+    id("org.jetbrains.dokka") version "1.7.20"
     id("maven-publish")
     signing
 }
@@ -34,10 +34,19 @@ val snapshot: String? by project
 group = PUBLISH_GROUP_ID
 version = if (snapshot.toBoolean()) "$PUBLISH_VERSION-SNAPSHOT" else PUBLISH_VERSION
 
+val dokkaHtml by tasks.getting(org.jetbrains.dokka.gradle.DokkaTask::class)
+
+val javadocJar: TaskProvider<Jar> by tasks.registering(Jar::class) {
+    dependsOn(dokkaHtml)
+    archiveClassifier.set("javadoc")
+    from(dokkaHtml.outputDirectory)
+}
+
 publishing {
     publications {
 
         withType<MavenPublication> {
+            artifact(javadocJar)
             pom {
                 name.set("Tree Data Structure")
                 description.set("Simple implementation to store object in tree structure.")
