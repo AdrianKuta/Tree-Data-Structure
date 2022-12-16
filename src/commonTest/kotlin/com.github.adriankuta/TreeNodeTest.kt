@@ -1,6 +1,8 @@
 package com.github.adriankuta
 
+import com.github.adriankuta.iterators.TreeNodeIterators
 import kotlin.test.Test
+import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
@@ -46,9 +48,7 @@ class TreeNodeTest {
             "Pretty print test"
         )
 
-        println("Remove: ${curdNode.value}")
         root.removeChild(curdNode)
-        println("Remove: ${gingerTeaNode.value}")
         root.removeChild(gingerTeaNode)
         assertEquals(
             "Root\n" +
@@ -86,9 +86,6 @@ class TreeNodeTest {
         val lassiNode = TreeNode("lassi")
         curdNode.addChild(yogurtNode)
         curdNode.addChild(lassiNode)
-
-        println(root.toString())
-        println(curdNode.height())
 
         root.clear()
         assertEquals(root.children, emptyList())
@@ -140,5 +137,44 @@ class TreeNodeTest {
             }
         }
         assertEquals(root.prettyString(), rootExt.prettyString())
+    }
+
+    @Test
+    fun preOrderIteratorTest() {
+        val tree = tree("F") {
+            child("B") {
+                child("A")
+                child("D") {
+                    child("C")
+                    child("E")
+                }
+            }
+            child("G") {
+                child("I") {
+                    child("H")
+                }
+            }
+        }
+        val expectedPreOrder = listOf("F", "B", "A", "D", "C", "E", "G", "I", "H")
+        assertContentEquals(expectedPreOrder, tree.toList().map { it.toString() })
+    }
+    @Test
+    fun postOrderIteratorTest() {
+        val tree = tree("A", TreeNodeIterators.PostOrder) {
+            child("B") {
+                child("E")
+            }
+            child("C")
+            child("D") {
+                child("F")
+                child("G")
+                child("H")
+                child("I")
+                child("J")
+            }
+        }
+
+        val expectedPreOrder = listOf("E", "B", "C", "F", "G", "H", "I", "J", "D", "A")
+        assertContentEquals(expectedPreOrder, tree.toList().map { it.toString() })
     }
 }

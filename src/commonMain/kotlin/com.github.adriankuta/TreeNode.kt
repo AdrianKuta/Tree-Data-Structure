@@ -1,5 +1,9 @@
 package com.github.adriankuta
 
+import com.github.adriankuta.iterators.PostOrderTreeIterator
+import com.github.adriankuta.iterators.PreOrderTreeIterator
+import com.github.adriankuta.iterators.TreeNodeIterators
+import com.github.adriankuta.iterators.TreeNodeIterators.*
 import kotlin.jvm.JvmSynthetic
 
 open class TreeNode<T>(val value: T) : Iterable<TreeNode<T>>, ChildDeclarationInterface<T> {
@@ -17,6 +21,8 @@ open class TreeNode<T>(val value: T) : Iterable<TreeNode<T>>, ChildDeclarationIn
      */
     val children: List<TreeNode<T>>
         get() = _children
+
+    var defaultIterator: TreeNodeIterators = PreOrder
 
     /**
      * Add new child to current node or root.
@@ -139,5 +145,8 @@ open class TreeNode<T>(val value: T) : Iterable<TreeNode<T>>, ChildDeclarationIn
      * Output: 1 2 5 10 6 11 12 13 3 4 7 8 9
      * ```
      */
-    override fun iterator(): Iterator<TreeNode<T>> = PreOrderTreeIterator(this)
+    override fun iterator(): Iterator<TreeNode<T>> = when (defaultIterator) {
+        PreOrder -> PreOrderTreeIterator(this)
+        PostOrder -> PostOrderTreeIterator(this)
+    }
 }

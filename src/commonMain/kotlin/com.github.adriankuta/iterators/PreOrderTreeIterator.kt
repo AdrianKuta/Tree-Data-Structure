@@ -1,4 +1,6 @@
-package com.github.adriankuta
+package com.github.adriankuta.iterators
+
+import com.github.adriankuta.TreeNode
 
 /**
  * Tree is iterated by using `Pre-order Traversal Algorithm"
@@ -31,10 +33,12 @@ class PreOrderTreeIterator<T>(root: TreeNode<T>) : Iterator<TreeNode<T>> {
     override fun hasNext(): Boolean = stack.isNotEmpty()
 
     override fun next(): TreeNode<T> {
+        println(stack)
         val node = stack.removeLast()
         node.children
             .asReversed()
             .forEach { stack.addLast(it) }
+        println(stack)
         return node
     }
 }

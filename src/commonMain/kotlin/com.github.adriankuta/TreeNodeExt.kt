@@ -1,5 +1,6 @@
 package com.github.adriankuta
 
+import com.github.adriankuta.iterators.TreeNodeIterators
 import kotlin.jvm.JvmSynthetic
 
 typealias ChildDeclaration<T> = ChildDeclarationInterface<T>.() -> Unit
@@ -13,8 +14,13 @@ typealias ChildDeclaration<T> = ChildDeclarationInterface<T>.() -> Unit
  * @see [ChildDeclarationInterface.child]
  */
 @JvmSynthetic
-inline fun<reified T> tree(root: T, childDeclaration: ChildDeclaration<T>): TreeNode<T> {
+inline fun <reified T> tree(
+    root: T,
+    defaultIterator: TreeNodeIterators = TreeNodeIterators.PreOrder,
+    childDeclaration: ChildDeclaration<T>
+): TreeNode<T> {
     val treeNode = TreeNode(root)
+    treeNode.defaultIterator = defaultIterator
     treeNode.childDeclaration()
     return treeNode
 }
