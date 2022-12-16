@@ -1,7 +1,7 @@
 # Tree (Data Structure)
 [![maven](https://img.shields.io/maven-central/v/com.github.adriankuta/tree-structure?style=plastic)](https://mvnrepository.com/artifact/com.github.adriankuta/tree-structure)
 [![License: MIT](https://img.shields.io/github/license/AdrianKuta/Tree-Data-Structure?style=plastic)](https://github.com/AdrianKuta/Tree-Data-Structure/blob/master/LICENSE)
-[![Publish](https://github.com/AdrianKuta/Tree-Data-Structure/actions/workflows/publish.yml/badge.svg)](https://github.com/AdrianKuta/Tree-Data-Structure/actions/workflows/publish.yml)
+[![Publish](https://github.com/AdrianKuta/Tree-Data-Structure/actions/workflows/publishRelease.yml/badge.svg)](https://github.com/AdrianKuta/Tree-Data-Structure/actions/workflows/publish.yml)
 
 Simple implementation to store object in tree structure.
 
