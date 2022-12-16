@@ -3,9 +3,9 @@ package com.github.adriankuta.iterators
 import com.github.adriankuta.TreeNode
 
 /**
- * Tree is iterated by using `Pre-order Traversal Algorithm"
- * The pre-order traversal is a topologically sorted one,
- * because a parent node is processed before any of its child nodes is done.
+ * Tree is iterated by using `Level-order Traversal Algorithm"
+ * In level-order traversal we iterating nodes level by level,
+ * starting from root, and going deeper and deeper in tree.
  * ```
  * E.g.
  *                    1
@@ -17,10 +17,10 @@ import com.github.adriankuta.TreeNode
  *            /   / | \
  *           10  11 12 13
  *
- * Output: 1 2 5 10 6 11 12 13 3 4 7 8 9
+ * Output: 1 2 3 4 5 6 7 8 9 10 11 12 13
  * ```
  */
-class PreOrderTreeIterator<T>(root: TreeNode<T>) : Iterator<TreeNode<T>> {
+class LevelOrderTreeIterator<T>(root: TreeNode<T>) : Iterator<TreeNode<T>> {
 
     private val stack = ArrayDeque<TreeNode<T>>()
 
@@ -31,9 +31,8 @@ class PreOrderTreeIterator<T>(root: TreeNode<T>) : Iterator<TreeNode<T>> {
     override fun hasNext(): Boolean = stack.isNotEmpty()
 
     override fun next(): TreeNode<T> {
-        val node = stack.removeLast()
+        val node =  stack.removeFirst()
         node.children
-            .asReversed()
             .forEach { stack.addLast(it) }
         return node
     }

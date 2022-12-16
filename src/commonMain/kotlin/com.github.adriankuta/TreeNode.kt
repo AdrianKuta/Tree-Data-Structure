@@ -1,5 +1,6 @@
 package com.github.adriankuta
 
+import com.github.adriankuta.iterators.LevelOrderTreeIterator
 import com.github.adriankuta.iterators.PostOrderTreeIterator
 import com.github.adriankuta.iterators.PreOrderTreeIterator
 import com.github.adriankuta.iterators.TreeNodeIterators
@@ -22,6 +23,9 @@ open class TreeNode<T>(val value: T) : Iterable<TreeNode<T>>, ChildDeclarationIn
     val children: List<TreeNode<T>>
         get() = _children
 
+    /**
+     * Choose one of available iterators from [TreeNodeIterators]
+     */
     var defaultIterator: TreeNodeIterators = PreOrder
 
     /**
@@ -126,27 +130,11 @@ open class TreeNode<T>(val value: T) : Iterable<TreeNode<T>>, ChildDeclarationIn
     }
 
     /**
-     * Tree is iterated by using `Pre-order Traversal Algorithm"
-     *  1. Check if the current node is empty or null.
-     *  2. Display the data part of the root (or current node).
-     *  3. Traverse the left subtree by recursively calling the pre-order function.
-     *  4. Traverse the right subtree by recursively calling the pre-order function.
-     * ```
-     * E.g.
-     *                    1
-     *                  / | \
-     *                 /  |   \
-     *               2    3     4
-     *              / \       / | \
-     *             5    6    7  8  9
-     *            /   / | \
-     *           10  11 12 13
-     *
-     * Output: 1 2 5 10 6 11 12 13 3 4 7 8 9
-     * ```
+     * You can change default iterator by changing [defaultIterator] property.
      */
     override fun iterator(): Iterator<TreeNode<T>> = when (defaultIterator) {
         PreOrder -> PreOrderTreeIterator(this)
         PostOrder -> PostOrderTreeIterator(this)
+        LevelOrder -> LevelOrderTreeIterator(this)
     }
 }

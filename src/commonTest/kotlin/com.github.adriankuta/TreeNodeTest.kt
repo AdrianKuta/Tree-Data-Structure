@@ -177,4 +177,52 @@ class TreeNodeTest {
         val expectedPreOrder = listOf("E", "B", "C", "F", "G", "H", "I", "J", "D", "A")
         assertContentEquals(expectedPreOrder, tree.toList().map { it.toString() })
     }
+
+    @Test
+    fun secondPostOrderIteratorTest() {
+        val tree = tree(1, TreeNodeIterators.PostOrder) {
+            child(2) {
+                child(5) {
+                    child(10)
+                }
+                child(6) {
+                    child(11)
+                    child(12)
+                    child(13)
+                }
+            }
+            child(3)
+            child(4) {
+                child(7)
+                child(8)
+                child(9)
+            }
+        }
+        val expectedOrder = listOf(10, 5, 11, 12, 13, 6, 2, 3, 7, 8, 9, 4, 1)
+        assertContentEquals(expectedOrder, tree.toList().map { it.value })
+    }
+
+    @Test
+    fun levelOrderIteratorTest() {
+        val tree = tree(1, TreeNodeIterators.LevelOrder) {
+            child(2) {
+                child(5) {
+                    child(10)
+                }
+                child(6) {
+                    child(11)
+                    child(12)
+                    child(13)
+                }
+            }
+            child(3)
+            child(4) {
+                child(7)
+                child(8)
+                child(9)
+            }
+        }
+        val expectedOrder = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)
+        assertContentEquals(expectedOrder, tree.toList().map { it.value })
+    }
 }

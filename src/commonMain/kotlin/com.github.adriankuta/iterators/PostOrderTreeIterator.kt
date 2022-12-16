@@ -4,10 +4,8 @@ import com.github.adriankuta.TreeNode
 
 /**
  * Tree is iterated by using `Post-order Traversal Algorithm"
- *  1. Check if the current node is empty or null.
- *  2. Display the data part of the root (or current node).
- *  3. Traverse the left subtree by recursively calling the pre-order function.
- *  4. Traverse the right subtree by recursively calling the pre-order function.
+ * In post-order traversal, we starting from most left child.
+ * First visit all children of parent, then parent.
  * ```
  * E.g.
  *                    1
@@ -19,7 +17,7 @@ import com.github.adriankuta.TreeNode
  *            /   / | \
  *           10  11 12 13
  *
- * Output: 1 2 5 10 6 11 12 13 3 4 7 8 9
+ * Output: 10 5 11 12 13 6 2 3 7 8 9 4 1
  * ```
  */
 class PostOrderTreeIterator<T>(root: TreeNode<T>) : Iterator<TreeNode<T>> {
