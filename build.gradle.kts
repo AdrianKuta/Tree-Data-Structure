@@ -9,7 +9,7 @@ plugins {
 
 val PUBLISH_GROUP_ID = "com.github.adriankuta"
 val PUBLISH_ARTIFACT_ID = "tree-structure"
-val PUBLISH_VERSION = "3.0"
+val PUBLISH_VERSION = "3.0.1"
 
 val secretFile = File(rootProject.rootDir, "local.properties")
 if (secretFile.exists()) {
