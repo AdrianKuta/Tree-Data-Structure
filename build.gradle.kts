@@ -9,7 +9,7 @@ plugins {
 
 val PUBLISH_GROUP_ID = "com.github.adriankuta"
 val PUBLISH_ARTIFACT_ID = "tree-structure"
-val PUBLISH_VERSION = "3.0"
+val PUBLISH_VERSION = "3.0.1"
 
 val secretFile = File(rootProject.rootDir, "local.properties")
 if (secretFile.exists()) {
@@ -135,7 +135,11 @@ kotlin {
                 implementation(kotlin("test"))
             }
         }
-        val jvmMain by getting
+        val jvmMain by getting {
+            dependencies {
+                implementation(kotlin("script-runtime"))
+            }
+        }
         val jvmTest by getting
         val jsMain by getting
         val jsTest by getting

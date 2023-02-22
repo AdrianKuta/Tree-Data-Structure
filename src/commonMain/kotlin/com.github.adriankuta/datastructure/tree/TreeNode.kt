@@ -1,11 +1,17 @@
 package com.github.adriankuta.datastructure.tree
 
-import com.github.adriankuta.datastructure.tree.TreeNodeIterators.*
+import com.github.adriankuta.datastructure.tree.exceptions.TreeNodeException
+import com.github.adriankuta.datastructure.tree.iterators.LevelOrderTreeIterator
+import com.github.adriankuta.datastructure.tree.iterators.PostOrderTreeIterator
+import com.github.adriankuta.datastructure.tree.iterators.PreOrderTreeIterator
+import com.github.adriankuta.datastructure.tree.iterators.TreeNodeIterators
+import com.github.adriankuta.datastructure.tree.iterators.TreeNodeIterators.*
 import kotlin.jvm.JvmSynthetic
 
 open class TreeNode<T>(val value: T) : Iterable<TreeNode<T>>, ChildDeclarationInterface<T> {
 
     private var _parent: TreeNode<T>? = null
+
     /**
      * The converse notion of a child, an immediate ancestor.
      */
@@ -13,11 +19,19 @@ open class TreeNode<T>(val value: T) : Iterable<TreeNode<T>>, ChildDeclarationIn
         get() = _parent
 
     private val _children = mutableListOf<TreeNode<T>>()
+
     /**
      * A group of nodes with the same parent.
      */
     val children: List<TreeNode<T>>
         get() = _children
+
+    /**
+     * Checks whether the current tree node is the root of the tree
+     * @return `true` if the current tree node is root of the tree, `false` otherwise.
+     */
+    val isRoot: Boolean
+        get() = _parent == null
 
     /**
      * Choose one of available iterators from [TreeNodeIterators]
@@ -37,7 +51,8 @@ open class TreeNode<T>(val value: T) : Iterable<TreeNode<T>>, ChildDeclarationIn
     @JvmSynthetic
     override fun child(value: T, childDeclaration: ChildDeclaration<T>?): TreeNode<T> {
         val newChild = TreeNode(value)
-        if(childDeclaration != null)
+        newChild._parent = this
+        if (childDeclaration != null)
             newChild.childDeclaration()
         _children.add(newChild)
         return newChild
@@ -89,6 +104,31 @@ open class TreeNode<T>(val value: T) : Iterable<TreeNode<T>>, ChildDeclarationIn
             tempParent = tempParent.parent
         }
         return depth
+    }
+
+    /**
+     * Returns the collection of nodes, which connect the current node
+     * with its descendants
+     *
+     * @param descendant the bottom child node for which the path is calculated
+     * @return collection of nodes, which connect the current node with its descendants
+     * @throws TreeNodeException exception that may be thrown in case if the
+     *                           current node does not have such descendant or if the
+     *                           specified tree node is root
+     */
+    @Throws(TreeNodeException::class)
+    fun path(descendant: TreeNode<T>): List<TreeNode<T>> {
+
+        val path = mutableListOf<TreeNode<T>>()
+        var node = descendant
+        path.add(node)
+        while (!node.isRoot) {
+            node = node.parent!!
+            path.add(node)
+            if (node == this)
+                return path
+        }
+        throw TreeNodeException("The specified tree node $descendant is not the descendant of tree node $this")
     }
 
     /**
