@@ -1,5 +1,6 @@
 package com.github.adriankuta.datastructure.tree
 
+import com.github.adriankuta.datastructure.tree.iterators.TreeNodeIterators
 import kotlin.jvm.JvmSynthetic
 
 typealias ChildDeclaration<T> = ChildDeclarationInterface<T>.() -> Unit
