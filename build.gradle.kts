@@ -135,7 +135,11 @@ kotlin {
                 implementation(kotlin("test"))
             }
         }
-        val jvmMain by getting
+        val jvmMain by getting {
+            dependencies {
+                implementation(kotlin("script-runtime"))
+            }
+        }
         val jvmTest by getting
         val jsMain by getting
         val jsTest by getting

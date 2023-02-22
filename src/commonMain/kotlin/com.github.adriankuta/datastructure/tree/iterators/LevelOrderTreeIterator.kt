@@ -1,4 +1,6 @@
-package com.github.adriankuta.datastructure.tree
+package com.github.adriankuta.datastructure.tree.iterators
+
+import com.github.adriankuta.datastructure.tree.TreeNode
 
 /**
  * Tree is iterated by using `Level-order Traversal Algorithm"
