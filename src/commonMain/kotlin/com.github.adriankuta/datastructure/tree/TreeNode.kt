@@ -8,7 +8,10 @@ import com.github.adriankuta.datastructure.tree.iterators.TreeNodeIterators
 import com.github.adriankuta.datastructure.tree.iterators.TreeNodeIterators.*
 import kotlin.jvm.JvmSynthetic
 
-open class TreeNode<T>(val value: T) : Iterable<TreeNode<T>>, ChildDeclarationInterface<T> {
+/**
+ * @param treeIterator Choose one of available iterators from [TreeNodeIterators]
+ */
+open class TreeNode<T>(val value: T, var treeIterator: TreeNodeIterators = PreOrder) : Iterable<TreeNode<T>>, ChildDeclarationInterface<T> {
 
     private var _parent: TreeNode<T>? = null
 
@@ -32,11 +35,6 @@ open class TreeNode<T>(val value: T) : Iterable<TreeNode<T>>, ChildDeclarationIn
      */
     val isRoot: Boolean
         get() = _parent == null
-
-    /**
-     * Choose one of available iterators from [TreeNodeIterators]
-     */
-    var defaultIterator: TreeNodeIterators = PreOrder
 
     /**
      * Add new child to current node or root.
@@ -166,9 +164,9 @@ open class TreeNode<T>(val value: T) : Iterable<TreeNode<T>>, ChildDeclarationIn
     }
 
     /**
-     * You can change default iterator by changing [defaultIterator] property.
+     * You can change default iterator by changing [treeIterator] property.
      */
-    override fun iterator(): Iterator<TreeNode<T>> = when (defaultIterator) {
+    override fun iterator(): Iterator<TreeNode<T>> = when (treeIterator) {
         PreOrder -> PreOrderTreeIterator(this)
         PostOrder -> PostOrderTreeIterator(this)
         LevelOrder -> LevelOrderTreeIterator(this)

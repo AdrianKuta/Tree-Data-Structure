@@ -19,8 +19,7 @@ inline fun <reified T> tree(
     defaultIterator: TreeNodeIterators = TreeNodeIterators.PreOrder,
     childDeclaration: ChildDeclaration<T>
 ): TreeNode<T> {
-    val treeNode = TreeNode(root)
-    treeNode.defaultIterator = defaultIterator
+    val treeNode = TreeNode(root, defaultIterator)
     treeNode.childDeclaration()
     return treeNode
 }
