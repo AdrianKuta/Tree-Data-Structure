@@ -9,7 +9,7 @@ plugins {
 
 val PUBLISH_GROUP_ID = "com.github.adriankuta"
 val PUBLISH_ARTIFACT_ID = "tree-structure"
-val PUBLISH_VERSION = "3.0.2"
+val PUBLISH_VERSION = "3.1.0"
 
 val secretFile = File(rootProject.rootDir, "local.properties")
 if (secretFile.exists()) {
@@ -118,6 +118,12 @@ kotlin {
             }
         }
     }
+
+    // Add iOS targets
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
+
     val hostOs = System.getProperty("os.name")
     val isMingwX64 = hostOs.startsWith("Windows")
     val nativeTarget = when {
@@ -126,7 +132,6 @@ kotlin {
         isMingwX64 -> mingwX64("native")
         else -> throw GradleException("Host OS is not supported in Kotlin/Native.")
     }
-
 
     sourceSets {
         val commonMain by getting
@@ -145,5 +150,19 @@ kotlin {
         val jsTest by getting
         val nativeMain by getting
         val nativeTest by getting
+
+        // Shared iOS source sets
+        val iosMain by creating {
+            dependsOn(commonMain)
+        }
+        val iosTest by creating {
+            dependsOn(commonTest)
+        }
+        val iosX64Main by getting { dependsOn(iosMain) }
+        val iosArm64Main by getting { dependsOn(iosMain) }
+        val iosSimulatorArm64Main by getting { dependsOn(iosMain) }
+        val iosX64Test by getting { dependsOn(iosTest) }
+        val iosArm64Test by getting { dependsOn(iosTest) }
+        val iosSimulatorArm64Test by getting { dependsOn(iosTest) }
     }
 }
