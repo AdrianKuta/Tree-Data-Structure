@@ -97,3 +97,24 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+---
+
+## Publishing (Maven Central migration)
+
+This project is configured to publish via Sonatype's s01.oss.sonatype.org (Nexus) which is compatible with the new Central (central.sonatype.com). The old oss.sonatype.org host is no longer used.
+
+Environment variables supported by the build:
+- CENTRAL_USERNAME / CENTRAL_PASSWORD — Central Portal user/token (preferred)
+- OSSRH_USERNAME / OSSRH_PASSWORD — legacy credentials (fallback)
+- SIGNING_KEY_ID / SIGNING_KEY / SIGNING_PASSWORD — PGP signing (ASCII-armored key)
+- SNAPSHOT — set to true to append -SNAPSHOT to version
+
+Gradle tasks:
+- Publish all publications to Sonatype: `./gradlew publishAllPublicationsToSonatypeS01Repository`
+- Or, standard publish (selects snapshots vs releases by version): `./gradlew publish`
+
+Notes:
+- Releases are uploaded to: https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/
+- Snapshots are uploaded to: https://s01.oss.sonatype.org/content/repositories/snapshots/
+- Staging/release close and promote are handled by Sonatype. If you use CI, set the env vars in your secrets.

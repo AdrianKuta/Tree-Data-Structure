@@ -21,6 +21,10 @@ if (secretFile.exists()) {
         project.ext[name.toString()] = value
     }
 } else {
+    // Prefer Central Portal credentials via environment variables
+    project.ext["centralUsername"] = System.getenv("CENTRAL_USERNAME")
+    project.ext["centralPassword"] = System.getenv("CENTRAL_PASSWORD")
+    // Fallback legacy OSSRH credentials (still supported on s01)
     project.ext["ossrhUsername"] = System.getenv("OSSRH_USERNAME")
     project.ext["ossrhPassword"] = System.getenv("OSSRH_PASSWORD")
     project.ext["sonatypeStagingProfileId"] = System.getenv("SONATYPE_STAGING_PROFILE_ID")
@@ -74,15 +78,29 @@ publishing {
 
     repositories {
         maven {
-            name = "Sonatype"
-            val releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
-            val snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
+            name = "SonatypeS01"
+            // s01 is the supported Nexus host for Central publishing via Maven-compatible uploads
+            val releasesRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            val snapshotsRepoUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
             url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
             credentials {
+                // Prefer Central Portal credentials when provided, fallback to legacy OSSRH credentials
+                val centralUsername: String? by project
+                val centralPassword: String? by project
+                val CENTRAL_USERNAME: String? by project
+                val CENTRAL_PASSWORD: String? by project
                 val ossrhUsername: String? by project
                 val ossrhPassword: String? by project
-                username = ossrhUsername
-                password = ossrhPassword
+                username = centralUsername
+                    ?: CENTRAL_USERNAME
+                    ?: ossrhUsername
+                    ?: System.getenv("CENTRAL_USERNAME")
+                    ?: System.getenv("OSSRH_USERNAME")
+                password = centralPassword
+                    ?: CENTRAL_PASSWORD
+                    ?: ossrhPassword
+                    ?: System.getenv("CENTRAL_PASSWORD")
+                    ?: System.getenv("OSSRH_PASSWORD")
             }
         }
     }
