@@ -1,147 +1,88 @@
 import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
-    kotlin("multiplatform") version "1.7.20"
-    id("org.jetbrains.dokka") version "1.7.20"
-    id("maven-publish")
+    kotlin("multiplatform") version "1.9.20"
+    id("org.jetbrains.dokka") version "1.9.20"
+    id("com.vanniktech.maven.publish") version "0.34.0"
     signing
 }
 
 val PUBLISH_GROUP_ID = "com.github.adriankuta"
-val PUBLISH_ARTIFACT_ID = "tree-structure"
-val PUBLISH_VERSION = "3.1.0"
+val PUBLISH_ARTIFACT_ID = "tree-structure"    // base artifact; KMP will add -jvm, -ios*, etc.
+val PUBLISH_VERSION = "3.1.1"
 
-val secretFile = File(rootProject.rootDir, "local.properties")
-if (secretFile.exists()) {
-    secretFile.reader().use {
-        Properties().apply {
-            load(it)
-        }
-    }.onEach { (name, value) ->
-        project.ext[name.toString()] = value
-    }
-} else {
-    // Prefer Central Portal credentials via environment variables
-    project.ext["centralUsername"] = System.getenv("CENTRAL_USERNAME")
-    project.ext["centralPassword"] = System.getenv("CENTRAL_PASSWORD")
-    // Fallback legacy OSSRH credentials (still supported on s01)
-    project.ext["ossrhUsername"] = System.getenv("OSSRH_USERNAME")
-    project.ext["ossrhPassword"] = System.getenv("OSSRH_PASSWORD")
-    project.ext["sonatypeStagingProfileId"] = System.getenv("SONATYPE_STAGING_PROFILE_ID")
-    project.ext["signingKeyId"] = System.getenv("SIGNING_KEY_ID")
-    project.ext["signingPassword"] = System.getenv("SIGNING_PASSWORD")
-    project.ext["signingKey"] = System.getenv("SIGNING_KEY")
-    project.ext["snapshot"] = System.getenv("SNAPSHOT")
-}
 val snapshot: String? by project
 
 group = PUBLISH_GROUP_ID
 version = if (snapshot.toBoolean()) "$PUBLISH_VERSION-SNAPSHOT" else PUBLISH_VERSION
 
-val dokkaHtml by tasks.getting(org.jetbrains.dokka.gradle.DokkaTask::class)
+mavenPublishing {
+    // Central Portal + auto release when we call publishAndReleaseToMavenCentral
+    publishToMavenCentral(automaticRelease = false)
+    signAllPublications()
 
-val javadocJar: TaskProvider<Jar> by tasks.registering(Jar::class) {
-    dependsOn(dokkaHtml)
-    archiveClassifier.set("javadoc")
-    from(dokkaHtml.outputDirectory)
-}
+    coordinates(PUBLISH_GROUP_ID, PUBLISH_ARTIFACT_ID, version.toString())
 
-publishing {
-    publications {
+    pom {
+        name.set("Tree Data Structure")
+        description.set("Simple implementation to store object in tree structure.")
+        url.set("https://github.com/AdrianKuta/Tree-Data-Structure")
 
-        withType<MavenPublication> {
-            artifact(javadocJar)
-            pom {
-                name.set("Tree Data Structure")
-                description.set("Simple implementation to store object in tree structure.")
-                url.set("https://github.com/AdrianKuta/Tree-Data-Structure")
-                licenses {
-                    license {
-                        name.set("MIT License")
-                        url.set("https://www.mit.edu/~amini/LICENSE.md")
-                    }
-                }
-                developers {
-                    developer {
-                        name.set("Adrian Kuta")
-                        email.set("adrian.kuta93@gmail.com")
-                    }
-                }
-                scm {
-                    connection.set("scm:git:github.com/AdrianKuta/Tree-Data-Structure.git")
-                    developerConnection.set("scm:git:ssh://github.com/AdrianKuta/Tree-Data-Structure.git")
-                    url.set("https://github.com/AdrianKuta/Tree-Data-Structure/tree/master")
-                }
+        licenses {
+            license {
+                name.set("MIT License")
+                url.set("https://opensource.org/licenses/MIT")
+                distribution.set("repo")
             }
         }
-    }
-
-    repositories {
-        maven {
-            name = "SonatypeS01"
-            // s01 is the supported Nexus host for Central publishing via Maven-compatible uploads
-            val releasesRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-            val snapshotsRepoUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
-            url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
-            credentials {
-                // Prefer Central Portal credentials when provided, fallback to legacy OSSRH credentials
-                val centralUsername: String? by project
-                val centralPassword: String? by project
-                val CENTRAL_USERNAME: String? by project
-                val CENTRAL_PASSWORD: String? by project
-                val ossrhUsername: String? by project
-                val ossrhPassword: String? by project
-                username = centralUsername
-                    ?: CENTRAL_USERNAME
-                    ?: ossrhUsername
-                    ?: System.getenv("CENTRAL_USERNAME")
-                    ?: System.getenv("OSSRH_USERNAME")
-                password = centralPassword
-                    ?: CENTRAL_PASSWORD
-                    ?: ossrhPassword
-                    ?: System.getenv("CENTRAL_PASSWORD")
-                    ?: System.getenv("OSSRH_PASSWORD")
+        developers {
+            developer {
+                id.set("AdrianKuta")
+                name.set("Adrian Kuta")
+                email.set("adrian.kuta93@gmail.com")
             }
+        }
+        scm {
+            url.set("https://github.com/AdrianKuta/Tree-Data-Structure")
+            connection.set("scm:git:https://github.com/AdrianKuta/Tree-Data-Structure.git")
+            developerConnection.set("scm:git:ssh://git@github.com/AdrianKuta/Tree-Data-Structure.git")
         }
     }
 }
 
-signing {
-    val signingKeyId: String? by project
-    val signingPassword: String? by project
-    val signingKey: String? by project
-    useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
-
-    sign(publishing.publications)
-}
+// No legacy publishing {} block or s01 repos — Central Portal handles it.
 
 repositories {
     mavenCentral()
 }
 
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+}
 kotlin {
+    jvmToolchain(21);
     jvm {
         compilations.all {
-            kotlinOptions.jvmTarget = "1.8"
-        }
-        withJava()
-        testRuns["test"].executionTask.configure {
-            useJUnitPlatform()
-        }
-    }
-    js(BOTH) {
-        browser {
-            commonWebpackConfig {
-                cssSupport.enabled = true
+            kotlinOptions {
+                jvmTarget = "21"   // <- was "1.8"
             }
         }
     }
 
-    // Add iOS targets
+    // JS targets (IR) for publishing
+    js(IR) {
+        browser()
+        nodejs()
+    }
+
+    // iOS targets
     iosX64()
     iosArm64()
     iosSimulatorArm64()
 
+    // Native host target
     val hostOs = System.getProperty("os.name")
     val isMingwX64 = hostOs.startsWith("Windows")
     val nativeTarget = when {
@@ -153,16 +94,8 @@ kotlin {
 
     sourceSets {
         val commonMain by getting
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
-            }
-        }
-        val jvmMain by getting {
-            dependencies {
-                implementation(kotlin("script-runtime"))
-            }
-        }
+        val commonTest by getting { dependencies { implementation(kotlin("test")) } }
+        val jvmMain by getting { dependencies { implementation(kotlin("script-runtime")) } }
         val jvmTest by getting
         val jsMain by getting
         val jsTest by getting
@@ -170,12 +103,8 @@ kotlin {
         val nativeTest by getting
 
         // Shared iOS source sets
-        val iosMain by creating {
-            dependsOn(commonMain)
-        }
-        val iosTest by creating {
-            dependsOn(commonTest)
-        }
+        val iosMain by creating { dependsOn(commonMain) }
+        val iosTest by creating { dependsOn(commonTest) }
         val iosX64Main by getting { dependsOn(iosMain) }
         val iosArm64Main by getting { dependsOn(iosMain) }
         val iosSimulatorArm64Main by getting { dependsOn(iosMain) }
