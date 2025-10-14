@@ -20,4 +20,4 @@ jobs:
 
         # Builds the release artifacts of the library
       - name: Test
-        run: ./gradlew test
+        run: ./gradlew cleanJvmTest jvmTest

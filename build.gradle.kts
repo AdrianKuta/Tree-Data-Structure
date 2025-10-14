@@ -71,6 +71,12 @@ kotlin {
         }
     }
 
+    // JS targets (IR) for publishing
+    js(IR) {
+        browser()
+        nodejs()
+    }
+
     // iOS targets
     iosX64()
     iosArm64()
@@ -91,6 +97,8 @@ kotlin {
         val commonTest by getting { dependencies { implementation(kotlin("test")) } }
         val jvmMain by getting { dependencies { implementation(kotlin("script-runtime")) } }
         val jvmTest by getting
+        val jsMain by getting
+        val jsTest by getting
         val nativeMain by getting
         val nativeTest by getting
 
