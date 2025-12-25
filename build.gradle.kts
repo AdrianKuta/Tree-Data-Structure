@@ -1,7 +1,11 @@
-import org.jetbrains.kotlin.konan.properties.Properties
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
+import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmTargetDsl
+import org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrTarget
+import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
+import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
 
 plugins {
-    kotlin("multiplatform") version "1.9.20"
+    kotlin("multiplatform") version "1.9.24"
     id("org.jetbrains.dokka") version "1.9.20"
     id("com.vanniktech.maven.publish") version "0.34.0"
     signing
@@ -77,6 +81,26 @@ kotlin {
         nodejs()
     }
 
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
+        browser()
+        nodejs()
+    }
+
+    rootProject.plugins.withType<NodeJsRootPlugin> {
+        rootProject.extensions.getByType<NodeJsRootExtension>().nodeVersion = "22.0.0"
+    }
+
+    kotlin.targets.withType<KotlinJsIrTarget> {
+        if (name == "wasmJs") {
+            @Suppress("UNCHECKED_CAST")
+            (this as KotlinWasmTargetDsl).apply {
+                nodejs {
+                }
+            }
+        }
+    }
+
     // iOS targets
     iosX64()
     iosArm64()
@@ -99,6 +123,8 @@ kotlin {
         val jvmTest by getting
         val jsMain by getting
         val jsTest by getting
+        val wasmJsMain by getting
+        val wasmJsTest by getting
         val nativeMain by getting
         val nativeTest by getting
 
