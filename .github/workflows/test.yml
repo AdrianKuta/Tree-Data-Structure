@@ -6,9 +6,19 @@ on:
   workflow_call:
 
 jobs:
-  build:
-    name: Run unit tests
-    runs-on: ubuntu-latest
+  test:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: JVM / JS / Wasm / Native + API check
+            os: ubuntu-latest
+            tasks: jvmTest jsNodeTest wasmJsNodeTest nativeTest apiCheck
+          - name: iOS
+            os: macos-latest
+            tasks: iosSimulatorArm64Test
     steps:
       - name: Check out code
         uses: actions/checkout@v4
@@ -17,7 +27,5 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
-
-        # Builds the release artifacts of the library
       - name: Test
-        run: ./gradlew cleanJvmTest jvmTest
+        run: ./gradlew ${{ matrix.tasks }} --console=plain

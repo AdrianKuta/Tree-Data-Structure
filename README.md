@@ -169,6 +169,38 @@ val copy = tree.deepCopy()
 tree.structurallyEquals(copy)              // true (same values, same shape, different nodes)
 ```
 
+## Optional modules
+
+The core `tree-structure` artifact has no third-party dependencies. Ecosystem integrations ship as
+separate, opt-in artifacts that depend on the core.
+
+### Serialization — `tree-structure-serialization`
+
+`kotlinx.serialization` support. A `TreeNode` holds a parent back-reference (a cycle), so it cannot
+be `@Serializable` directly — convert to/from the acyclic `TreeNodeDto` instead.
+
+```kotlin
+implementation("com.github.adriankuta:tree-structure-serialization:3.4.0")
+```
+
+```kotlin
+val json = Json.encodeToString(tree.toDto())
+val restored = Json.decodeFromString<TreeNodeDto<String>>(json).toTreeNode()
+```
+
+### Coroutines — `tree-structure-coroutines`
+
+Traverse a tree as a cold `Flow` (handy in coroutine/`ViewModel` pipelines).
+
+```kotlin
+implementation("com.github.adriankuta:tree-structure-coroutines:3.4.0")
+```
+
+```kotlin
+tree.preOrderFlow().collect { println(it.value) }
+tree.asFlow(TreeNodeIterators.LevelOrder).map { it.value }
+```
+
 ## Publishing to Maven Central (central.sonatype.com)
 
 This project is configured to publish artifacts to Maven Central via the Sonatype Central Portal.
