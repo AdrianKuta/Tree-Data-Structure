@@ -5,8 +5,12 @@
 
 Lightweight Kotlin Multiplatform tree data structure for Kotlin and Java. Includes a small DSL, multiple traversal iterators, and pretty-print support.
 
-- Kotlin Multiplatform (JVM, JS, iOS, and Native host)
+- Kotlin Multiplatform (JVM, JS, Wasm, iOS, and Native host)
 - Pre-order, Post-order, and Level-order iteration
+- Lazy `Sequence` traversal that composes with the Kotlin stdlib (`map`/`filter`/`firstOrNull`…)
+- Navigation helpers: `root()`, `ancestors()`, `siblings()`, `leaves()`, `descendants()`, `isLeaf`, `degree`
+- Functional helpers: `findNode`, `filterNodes`, `anyNode`, `allNodes`, `foldNodes`, `mapValues`, `deepCopy`, `structurallyEquals`
+- Stack-safe: traversal and `height()`/`nodeCount()`/`clear()` handle arbitrarily deep trees without `StackOverflowError`
 - Simple DSL: tree { child(...) }
 - Utilities: nodeCount(), height(), depth(), path(), prettyString(), clear(), removeChild()
 
@@ -114,6 +118,55 @@ val path = root.path(root.children.first()) // nodes from descendant up to root
 val child = root.children.first()
 root.removeChild(child)
 root.clear()       // remove entire subtree
+```
+
+### Lazy traversal with Sequence
+
+Traversal is exposed as a lazy `Sequence`, so it composes with the Kotlin standard library and
+short-circuits (it never materializes the whole tree just to find one node):
+
+```kotlin
+val tree = tree("World") {
+    child("North America") { child("USA") }
+    child("Europe") {
+        child("Poland")
+        child("Germany")
+    }
+}
+
+// Pick an order explicitly — no need to mutate the node's state.
+tree.preOrderSequence().map { it.value }.toList()    // [World, North America, USA, Europe, Poland, Germany]
+tree.levelOrderSequence().first { it.value == "USA" } // stops as soon as it's found
+tree.asSequence(TreeNodeIterators.PostOrder).count()  // 6
+```
+
+### Navigation
+
+```kotlin
+val usa = tree.findNode { it == "USA" }!!
+
+usa.isLeaf           // true
+usa.depth()          // 2
+usa.root().value     // "World"
+usa.ancestors().map { it.value } // [North America, World]
+tree.leaves().map { it.value }   // [USA, Poland, Germany]
+val europe = tree.findNode { it == "Europe" }!!
+europe.children.first().siblings().map { it.value } // [Germany]
+```
+
+### Functional operations
+
+```kotlin
+tree.anyNode { it == "Poland" }            // true
+tree.filterNodes { it.length > 5 }         // nodes whose value is longer than 5 chars
+tree.countNodes { it.startsWith("U") }     // 1
+
+// Transform values into a brand-new tree (the original is untouched); stack-safe.
+val lengths: TreeNode<Int> = tree.mapValues { it.length }
+
+// Deep copy + structural comparison.
+val copy = tree.deepCopy()
+tree.structurallyEquals(copy)              // true (same values, same shape, different nodes)
 ```
 
 ## Publishing to Maven Central (central.sonatype.com)

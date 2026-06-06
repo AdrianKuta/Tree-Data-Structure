@@ -9,7 +9,23 @@ import com.github.adriankuta.datastructure.tree.iterators.TreeNodeIterators.*
 import kotlin.jvm.JvmSynthetic
 
 /**
- * @param treeIterator Choose one of available iterators from [TreeNodeIterators]
+ * A node in a generic, mutable n-ary tree. Each node holds a [value], a reference to its [parent]
+ * and an ordered list of [children].
+ *
+ * Iterating a node (via [iterator], or the lazy [asSequence]/[preOrderSequence] extensions) visits
+ * the node and all of its descendants. Traversal and the [height]/[nodeCount]/[clear] helpers are
+ * implemented iteratively, so they are safe on arbitrarily deep trees.
+ *
+ * **Not thread-safe.** Nodes are mutable ([addChild]/[removeChild]/[clear] mutate the structure and
+ * parent pointers). Sharing a tree across threads requires external synchronization, and the tree
+ * must not be modified while it is being iterated.
+ *
+ * Equality is by reference (identity); use the `structurallyEquals` extension to compare two trees
+ * by value and shape.
+ *
+ * @param value the value stored in this node.
+ * @param treeIterator the default traversal order used by [iterator]. Prefer the
+ *   `asSequence(order)` / `preOrderSequence()` extensions to choose an order without mutating state.
  */
 open class TreeNode<T>(val value: T, var treeIterator: TreeNodeIterators = PreOrder) : Iterable<TreeNode<T>>, ChildDeclarationInterface<T> {
 

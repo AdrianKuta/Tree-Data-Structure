@@ -2,37 +2,25 @@ import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.dokka)
     alias(libs.plugins.mavenPublish)
-    alias(libs.plugins.binaryCompatibilityValidator)
-    alias(libs.plugins.kover)
     signing
 }
 
-val PUBLISH_GROUP_ID = "com.github.adriankuta"
-val PUBLISH_ARTIFACT_ID = "tree-structure"    // base artifact; KMP will add -jvm, -ios*, etc.
-val PUBLISH_VERSION = "3.4.0"
-
-val snapshot: String? by project
-
-group = PUBLISH_GROUP_ID
-version = if (snapshot.toBoolean()) "$PUBLISH_VERSION-SNAPSHOT" else PUBLISH_VERSION
+group = "com.github.adriankuta"
+version = rootProject.version
 
 mavenPublishing {
-    // Central Portal + auto release when we call publishAndReleaseToMavenCentral
     publishToMavenCentral(automaticRelease = false)
     signAllPublications()
 
-    coordinates(PUBLISH_GROUP_ID, PUBLISH_ARTIFACT_ID, version.toString())
+    coordinates("com.github.adriankuta", "tree-structure-serialization", version.toString())
 
     pom {
-        name.set("Tree Data Structure")
-        description.set(
-            "Lightweight n-ary tree data structure for Kotlin Multiplatform (JVM, JS, Wasm, iOS, " +
-                "Native). DSL, pre/post/level-order traversal, lazy Sequence traversal, and pretty-print.",
-        )
+        name.set("Tree Data Structure — kotlinx.serialization")
+        description.set("kotlinx.serialization support (TreeNodeDto round-trip) for the tree-structure library.")
         url.set("https://github.com/AdrianKuta/Tree-Data-Structure")
-
         licenses {
             license {
                 name.set("MIT License")
@@ -75,12 +63,10 @@ kotlin {
         nodejs()
     }
 
-    // Apple targets
     iosX64()
     iosArm64()
     iosSimulatorArm64()
 
-    // Native host target
     val hostOs = System.getProperty("os.name")
     val isMingwX64 = hostOs.startsWith("Windows")
     when {
@@ -91,6 +77,10 @@ kotlin {
     }
 
     sourceSets {
+        commonMain.dependencies {
+            api(project(":"))
+            api(libs.kotlinx.serialization.json)
+        }
         commonTest.dependencies {
             implementation(kotlin("test"))
         }
