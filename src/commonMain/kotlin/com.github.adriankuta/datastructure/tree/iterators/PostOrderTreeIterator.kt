@@ -22,27 +22,22 @@ import com.github.adriankuta.datastructure.tree.TreeNode
  */
 class PostOrderTreeIterator<T>(root: TreeNode<T>) : Iterator<TreeNode<T>> {
 
-    private val stack = ArrayDeque<TreeNode<T>>()
+    private val result = ArrayDeque<TreeNode<T>>()
 
     init {
-        stack.addAll(getChildrenStack(root))
-    }
-
-    override fun hasNext(): Boolean = stack.isNotEmpty()
-
-    override fun next(): TreeNode<T> {
-        return stack.removeFirst()
-    }
-
-    private fun getChildrenStack(node: TreeNode<T>): ArrayDeque<TreeNode<T>> {
+        // Iterative post-order: pop a node, prepend it to `result`, then push its children
+        // left-to-right. Reading `result` front-to-back yields post-order — without the deep
+        // recursion that overflowed the stack on degenerate (linear) trees.
         val stack = ArrayDeque<TreeNode<T>>()
-        if(node.children.isEmpty()) {
-            return ArrayDeque(listOf(node))
+        stack.addLast(root)
+        while (stack.isNotEmpty()) {
+            val node = stack.removeLast()
+            result.addFirst(node)
+            node.children.forEach { stack.addLast(it) }
         }
-        node.children.forEach {
-            stack.addAll(getChildrenStack(it))
-        }
-        stack.addLast(node)
-        return stack
     }
+
+    override fun hasNext(): Boolean = result.isNotEmpty()
+
+    override fun next(): TreeNode<T> = result.removeFirst()
 }

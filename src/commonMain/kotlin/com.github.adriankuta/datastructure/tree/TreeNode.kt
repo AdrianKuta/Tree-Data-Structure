@@ -72,20 +72,30 @@ open class TreeNode<T>(val value: T, var treeIterator: TreeNodeIterators = PreOr
      * @return All child and nested child count.
      */
     fun nodeCount(): Int {
-        if (_children.isEmpty())
-            return 0
-        return _children.size +
-                _children.sumOf { it.nodeCount() }
+        var count = 0
+        val stack = ArrayDeque<TreeNode<T>>()
+        stack.addAll(_children)
+        while (stack.isNotEmpty()) {
+            val node = stack.removeLast()
+            count++
+            stack.addAll(node._children)
+        }
+        return count
     }
 
     /**
      * @return The number of edges on the longest path between current node and a descendant leaf.
      */
     fun height(): Int {
-        val childrenMaxDepth = _children.map { it.height() }
-            .maxOrNull()
-            ?: -1 // -1 because this method counts nodes, and edges are always one less then nodes.
-        return childrenMaxDepth + 1
+        var maxDepth = 0
+        val stack = ArrayDeque<Pair<TreeNode<T>, Int>>()
+        stack.addLast(this to 0)
+        while (stack.isNotEmpty()) {
+            val (node, depthSoFar) = stack.removeLast()
+            if (depthSoFar > maxDepth) maxDepth = depthSoFar
+            node._children.forEach { stack.addLast(it to depthSoFar + 1) }
+        }
+        return maxDepth
     }
 
     /**
@@ -132,9 +142,18 @@ open class TreeNode<T>(val value: T, var treeIterator: TreeNodeIterators = PreOr
      * Remove all children from root and every node in tree.
      */
     fun clear() {
-        _parent = null
-        _children.forEach { it.clear() }
-        _children.clear()
+        val all = ArrayDeque<TreeNode<T>>()
+        val stack = ArrayDeque<TreeNode<T>>()
+        stack.addLast(this)
+        while (stack.isNotEmpty()) {
+            val node = stack.removeLast()
+            all.addLast(node)
+            stack.addAll(node._children)
+        }
+        all.forEach { node ->
+            node._parent = null
+            node._children.clear()
+        }
     }
 
     override fun toString(): String {
