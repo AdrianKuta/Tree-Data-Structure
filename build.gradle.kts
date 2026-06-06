@@ -13,7 +13,7 @@ plugins {
 
 val PUBLISH_GROUP_ID = "com.github.adriankuta"
 val PUBLISH_ARTIFACT_ID = "tree-structure"    // base artifact; KMP will add -jvm, -ios*, etc.
-val PUBLISH_VERSION = "3.1.4"
+val PUBLISH_VERSION = "3.1.5"
 
 val snapshot: String? by project
 
@@ -119,7 +119,7 @@ kotlin {
     sourceSets {
         val commonMain by getting
         val commonTest by getting { dependencies { implementation(kotlin("test")) } }
-        val jvmMain by getting { dependencies { implementation(kotlin("script-runtime")) } }
+        val jvmMain by getting
         val jvmTest by getting
         val jsMain by getting
         val jsTest by getting

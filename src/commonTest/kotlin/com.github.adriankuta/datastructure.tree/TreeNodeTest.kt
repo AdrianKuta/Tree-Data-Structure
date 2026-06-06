@@ -4,7 +4,9 @@ import com.github.adriankuta.datastructure.tree.iterators.TreeNodeIterators
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 class TreeNodeTest {
 
@@ -60,6 +62,18 @@ class TreeNodeTest {
             root.prettyString(),
             "Remove node test"
         )
+    }
+
+    @Test
+    fun removeChildReturnsTrueWhenPresentFalseOtherwise() {
+        val root = TreeNode("Root")
+        val child = TreeNode("Child")
+        root.addChild(child)
+
+        assertTrue(root.removeChild(child), "Removing a present child returns true")
+        assertFalse(root.removeChild(child), "Removing an already-removed child returns false")
+        assertNull(child.parent, "Removed child is detached from its parent")
+        assertEquals(emptyList(), root.children)
     }
 
     @Test

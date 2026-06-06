@@ -16,14 +16,14 @@ Gradle (Kotlin DSL):
 ```kotlin
 // commonMain for KMP projects, or any sourceSet/module where you need it
 dependencies {
-    implementation("com.github.adriankuta:tree-structure:3.1.1") // see badge above for the latest version
+    implementation("com.github.adriankuta:tree-structure:3.1.5") // see badge above for the latest version
 }
 ```
 
 Gradle (Groovy):
 ```groovy
 dependencies {
-    implementation "com.github.adriankuta:tree-structure:3.1.1" // see badge above for the latest
+    implementation "com.github.adriankuta:tree-structure:3.1.5" // see badge above for the latest
 }
 ```
 
@@ -32,7 +32,7 @@ Maven:
 <dependency>
   <groupId>com.github.adriankuta</groupId>
   <artifactId>tree-structure</artifactId>
-  <version>3.1.1</version>
+  <version>3.1.5</version>
 </dependency>
 ```
 
