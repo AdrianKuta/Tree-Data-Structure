@@ -20,14 +20,14 @@ Gradle (Kotlin DSL):
 ```kotlin
 // commonMain for KMP projects, or any sourceSet/module where you need it
 dependencies {
-    implementation("com.github.adriankuta:tree-structure:3.1.5") // see badge above for the latest version
+    implementation("com.github.adriankuta:tree-structure:4.0.0") // see badge above for the latest version
 }
 ```
 
 Gradle (Groovy):
 ```groovy
 dependencies {
-    implementation "com.github.adriankuta:tree-structure:3.1.5" // see badge above for the latest
+    implementation "com.github.adriankuta:tree-structure:4.0.0" // see badge above for the latest
 }
 ```
 
@@ -36,7 +36,7 @@ Maven:
 <dependency>
   <groupId>com.github.adriankuta</groupId>
   <artifactId>tree-structure</artifactId>
-  <version>3.1.5</version>
+  <version>4.0.0</version>
 </dependency>
 ```
 
@@ -179,7 +179,7 @@ separate, opt-in artifacts that depend on the core.
 be `@Serializable` directly — convert to/from the acyclic `TreeNodeDto` instead.
 
 ```kotlin
-implementation("com.github.adriankuta:tree-structure-serialization:3.4.0")
+implementation("com.github.adriankuta:tree-structure-serialization:4.0.0")
 ```
 
 ```kotlin
@@ -192,12 +192,30 @@ val restored = Json.decodeFromString<TreeNodeDto<String>>(json).toTreeNode()
 Traverse a tree as a cold `Flow` (handy in coroutine/`ViewModel` pipelines).
 
 ```kotlin
-implementation("com.github.adriankuta:tree-structure-coroutines:3.4.0")
+implementation("com.github.adriankuta:tree-structure-coroutines:4.0.0")
 ```
 
 ```kotlin
 tree.preOrderFlow().collect { println(it.value) }
 tree.asFlow(TreeNodeIterators.LevelOrder).map { it.value }
+```
+
+### Compose UI — `tree-structure-compose`
+
+A `LazyTree` composable for Compose Multiplatform (JVM/desktop, iOS, Wasm). Only the visible nodes
+are composed, and you decide how each node looks:
+
+```kotlin
+implementation("com.github.adriankuta:tree-structure-compose:4.0.0")
+```
+
+```kotlin
+LazyTree(root) { node, depth, expanded, toggle ->
+    Row(Modifier.padding(start = (depth * 16).dp).clickable(onClick = toggle)) {
+        if (!node.isLeaf) Text(if (expanded) "▾ " else "▸ ")
+        Text(node.value.toString())
+    }
+}
 ```
 
 ## Publishing to Maven Central (central.sonatype.com)

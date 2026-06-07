@@ -64,12 +64,19 @@ public open class TreeNode<T>(public val value: T, public val treeIterator: Tree
         if (child._parent != null) {
             throw TreeNodeException("$child already has a parent; call detach() before re-attaching it.")
         }
-        var ancestor: TreeNode<T>? = this
-        while (ancestor != null) {
-            if (ancestor === child) {
-                throw TreeNodeException("Adding $child here would create a cycle.")
+        if (child === this) {
+            throw TreeNodeException("Adding $child here would create a cycle.")
+        }
+        // Only a node that already has its own subtree can contain `this` and thus form a cycle.
+        // Skipping this walk for leaves keeps building deep trees O(n) instead of O(n²).
+        if (child._children.isNotEmpty()) {
+            var ancestor: TreeNode<T>? = _parent
+            while (ancestor != null) {
+                if (ancestor === child) {
+                    throw TreeNodeException("Adding $child here would create a cycle.")
+                }
+                ancestor = ancestor._parent
             }
-            ancestor = ancestor._parent
         }
         child._parent = this
         _children.add(child)
