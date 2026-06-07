@@ -10,6 +10,7 @@ public class com/github/adriankuta/datastructure/tree/TreeNode : com/github/adri
 	public fun <init> (Ljava/lang/Object;Lcom/github/adriankuta/datastructure/tree/iterators/TreeNodeIterators;)V
 	public synthetic fun <init> (Ljava/lang/Object;Lcom/github/adriankuta/datastructure/tree/iterators/TreeNodeIterators;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun addChild (Lcom/github/adriankuta/datastructure/tree/TreeNode;)V
+	public final fun addChildren ([Lcom/github/adriankuta/datastructure/tree/TreeNode;)V
 	public synthetic fun child (Ljava/lang/Object;Lkotlin/jvm/functions/Function1;)Lcom/github/adriankuta/datastructure/tree/TreeNode;
 	public final fun clear ()V
 	public final fun depth ()I
@@ -19,13 +20,18 @@ public class com/github/adriankuta/datastructure/tree/TreeNode : com/github/adri
 	public final fun getTreeIterator ()Lcom/github/adriankuta/datastructure/tree/iterators/TreeNodeIterators;
 	public final fun getValue ()Ljava/lang/Object;
 	public final fun height ()I
+	public final fun insertChild (ILcom/github/adriankuta/datastructure/tree/TreeNode;)V
 	public final fun isRoot ()Z
 	public fun iterator ()Ljava/util/Iterator;
 	public final fun iterator (Lcom/github/adriankuta/datastructure/tree/iterators/TreeNodeIterators;)Ljava/util/Iterator;
+	public final fun moveChild (Lcom/github/adriankuta/datastructure/tree/TreeNode;I)Z
 	public final fun nodeCount ()I
 	public final fun path (Lcom/github/adriankuta/datastructure/tree/TreeNode;)Ljava/util/List;
 	public final fun prettyString ()Ljava/lang/String;
 	public final fun removeChild (Lcom/github/adriankuta/datastructure/tree/TreeNode;)Z
+	public final fun removeChildAt (I)Lcom/github/adriankuta/datastructure/tree/TreeNode;
+	public final fun replaceChild (ILcom/github/adriankuta/datastructure/tree/TreeNode;)Lcom/github/adriankuta/datastructure/tree/TreeNode;
+	public final fun sortChildren (Ljava/util/Comparator;)V
 	public fun toString ()Ljava/lang/String;
 }
 
