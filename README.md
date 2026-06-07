@@ -3,16 +3,23 @@
 [![License: MIT](https://img.shields.io/github/license/AdrianKuta/Tree-Data-Structure?style=plastic)](https://github.com/AdrianKuta/Tree-Data-Structure/blob/master/LICENSE)
 [![Publish](https://github.com/AdrianKuta/Tree-Data-Structure/actions/workflows/publishRelease.yml/badge.svg)](https://github.com/AdrianKuta/Tree-Data-Structure/actions/workflows/publishRelease.yml)
 
-Lightweight Kotlin Multiplatform tree data structure for Kotlin and Java. Includes a small DSL, multiple traversal iterators, and pretty-print support.
+A lightweight n-ary tree for Kotlin Multiplatform. You get a generic `TreeNode<T>`, a small DSL for
+building trees, three traversal orders, lazy `Sequence` traversal, and a set of navigation and
+functional helpers. The core artifact has no third-party dependencies.
 
-- Kotlin Multiplatform (JVM, JS, Wasm, iOS, and Native host)
-- Pre-order, Post-order, and Level-order iteration
-- Lazy `Sequence` traversal that composes with the Kotlin stdlib (`map`/`filter`/`firstOrNull`…)
-- Navigation helpers: `root()`, `ancestors()`, `siblings()`, `leaves()`, `descendants()`, `isLeaf`, `degree`
-- Functional helpers: `findNode`, `filterNodes`, `anyNode`, `allNodes`, `foldNodes`, `mapValues`, `deepCopy`, `structurallyEquals`
-- Stack-safe: traversal and `height()`/`nodeCount()`/`clear()` handle arbitrarily deep trees without `StackOverflowError`
-- Simple DSL: tree { child(...) }
-- Utilities: nodeCount(), height(), depth(), path(), prettyString(), clear(), removeChild()
+It fits homogeneous trees of arbitrary depth: UI component hierarchies, file-system views, org
+charts, and category menus. For fixed, typed hierarchies (like a compiler AST) a sealed class is
+usually a better fit.
+
+## Features
+
+- Kotlin Multiplatform: JVM, JS, Wasm, iOS, and a native host target.
+- Build trees with a `tree { child(...) }` DSL or node by node with `addChild`.
+- Pre-order, post-order, and level-order traversal, as iterators or lazy `Sequence`s.
+- Navigation: `root()`, `ancestors()`, `siblings()`, `leaves()`, `descendants()`, `isLeaf`, `degree`.
+- Functional helpers: `findNode`, `filterNodes`, `anyNode`, `allNodes`, `foldNodes`, `mapValues`, `deepCopy`, `structurallyEquals`.
+- Utilities: `nodeCount()`, `height()`, `depth()`, `path()`, `prettyString()`.
+- Stack-safe: traversal and `height()`/`nodeCount()`/`clear()` handle very deep trees without `StackOverflowError`.
 
 ## Installation
 
@@ -20,14 +27,14 @@ Gradle (Kotlin DSL):
 ```kotlin
 // commonMain for KMP projects, or any sourceSet/module where you need it
 dependencies {
-    implementation("com.github.adriankuta:tree-structure:4.0.0") // see badge above for the latest version
+    implementation("com.github.adriankuta:tree-structure:4.0.0") // latest version is on the badge above
 }
 ```
 
 Gradle (Groovy):
 ```groovy
 dependencies {
-    implementation "com.github.adriankuta:tree-structure:4.0.0" // see badge above for the latest
+    implementation "com.github.adriankuta:tree-structure:4.0.0"
 }
 ```
 
@@ -40,27 +47,9 @@ Maven:
 </dependency>
 ```
 
-## Usage
+## Building a tree
 
-**Kotlin**
-```kotlin
-val root = TreeNode("World")
-val northA = TreeNode("North America")
-val europe = TreeNode("Europe")
-root.addChild(northA)
-root.addChild(europe)
-
-val usa = TreeNode("USA")
-northA.addChild(usa)
-
-val poland = TreeNode("Poland")
-val france = TreeNode("France")
-europe.addChild(poland)
-europe.addChild(france)
-println(root.prettyString())
-```
-
-**Pretty Kotlin (DSL)**
+The DSL is the shortest way to build one:
 ```kotlin
 val root = tree("World") {
     child("North America") { child("USA") }
@@ -71,136 +60,123 @@ val root = tree("World") {
 }
 ```
 
-**Java**
+The same node-by-node API works from Kotlin and Java:
 ```java
 TreeNode<String> root = new TreeNode<>("World");
-TreeNode<String> northA = new TreeNode<>("North America");
+TreeNode<String> northAmerica = new TreeNode<>("North America");
+root.addChild(northAmerica);
+northAmerica.addChild(new TreeNode<>("USA"));
+
 TreeNode<String> europe = new TreeNode<>("Europe");
-root.addChild(northA);
 root.addChild(europe);
-
-TreeNode<String> usa = new TreeNode<>("USA");
-northA.addChild(usa);
-
-TreeNode<String> poland = new TreeNode<>("Poland");
-TreeNode<String> france = new TreeNode<>("France");
-europe.addChild(poland);
-europe.addChild(france);
-System.out.println(root.prettyString());
+europe.addChild(new TreeNode<>("Poland"));
+europe.addChild(new TreeNode<>("Germany"));
 ```
 
-Output:
+`prettyString()` renders the tree for logs and debugging:
 ```
 World
 ├── North America
 │   └── USA
 └── Europe
     ├── Poland
-    └── France
+    └── Germany
 ```
 
-### Traversal and utilities
-```kotlin
-val root = TreeNode("root")
-// ... build your tree
+## Traversal
 
-// Choose iteration order per call (the default order is set in the constructor and is read-only)
+Iterating a node visits the node and all of its descendants. The default order is set in the
+constructor (pre-order by default) and is read-only. Pass an order per call when you need a
+different one:
+```kotlin
+for (node in root) println(node.value)                            // default pre-order
 for (node in root.asSequence(TreeNodeIterators.PostOrder)) println(node.value)
-
-// Utilities
-root.nodeCount()   // number of descendants
-root.height()      // longest path to a leaf (in edges)
-root.depth()       // distance from current node to the root
-val path = root.path(root.children.first()) // nodes from descendant up to root
-
-// Mutations — removeChild removes a *direct* child; detach() unhooks a node from wherever it lives
-val child = root.children.first()
-root.removeChild(child)   // child is now detached from root
-root.clear()              // remove all descendants of root
 ```
 
-### Lazy traversal with Sequence
-
-Traversal is exposed as a lazy `Sequence`, so it composes with the Kotlin standard library and
-short-circuits (it never materializes the whole tree just to find one node):
-
+Traversal is also exposed as a lazy `Sequence`, so it composes with the standard library and stops
+early instead of materializing the whole tree:
 ```kotlin
-val tree = tree("World") {
-    child("North America") { child("USA") }
-    child("Europe") {
-        child("Poland")
-        child("Germany")
-    }
-}
-
-// Pick an order explicitly — no need to mutate the node's state.
-tree.preOrderSequence().map { it.value }.toList()    // [World, North America, USA, Europe, Poland, Germany]
-tree.levelOrderSequence().first { it.value == "USA" } // stops as soon as it's found
-tree.asSequence(TreeNodeIterators.PostOrder).count()  // 6
+root.preOrderSequence().map { it.value }.toList()       // [World, North America, USA, Europe, Poland, Germany]
+root.levelOrderSequence().first { it.value == "USA" }   // stops as soon as it is found
+root.asSequence(TreeNodeIterators.PostOrder).count()    // 6
 ```
 
-### Navigation
-
+## Navigation
 ```kotlin
-val usa = tree.findNode { it == "USA" }!!
+val usa = root.findNode { it == "USA" }!!
 
-usa.isLeaf           // true
-usa.depth()          // 2
-usa.root().value     // "World"
-usa.ancestors().map { it.value } // [North America, World]
-tree.leaves().map { it.value }   // [USA, Poland, Germany]
-val europe = tree.findNode { it == "Europe" }!!
-europe.children.first().siblings().map { it.value } // [Germany]
+usa.isLeaf                          // true
+usa.depth()                        // 2
+usa.root().value                   // "World"
+usa.ancestors().map { it.value }   // [North America, World]
+root.leaves().map { it.value }     // [USA, Poland, Germany]
 ```
 
-### Functional operations
-
+## Functional operations
 ```kotlin
-tree.anyNode { it == "Poland" }            // true
-tree.filterNodes { it.length > 5 }         // nodes whose value is longer than 5 chars
-tree.countNodes { it.startsWith("U") }     // 1
+root.anyNode { it == "Poland" }        // true
+root.filterNodes { it.length > 5 }     // nodes whose value is longer than 5 characters
+root.countNodes { it.startsWith("U") } // 1
 
-// Transform values into a brand-new tree (the original is untouched); stack-safe.
-val lengths: TreeNode<Int> = tree.mapValues { it.length }
+val lengths: TreeNode<Int> = root.mapValues { it.length } // a new tree; the original is untouched
+val copy = root.deepCopy()
+root.structurallyEquals(copy)          // true: same values and shape, different nodes
+```
 
-// Deep copy + structural comparison.
-val copy = tree.deepCopy()
-tree.structurallyEquals(copy)              // true (same values, same shape, different nodes)
+## Utilities
+```kotlin
+root.nodeCount()  // number of descendants, excluding the root
+root.height()     // edges on the longest path down to a leaf
+root.depth()      // edges from this node up to the root
+root.path(usa)    // [USA, North America, World], or null if usa is not a descendant
+```
+
+## Mutating a tree
+```kotlin
+// addChild rejects a node that already has a parent or that would create a cycle.
+root.addChild(TreeNode("Asia"))
+
+// removeChild removes a direct child of the receiver and returns true if it was present.
+root.removeChild(root.children.first())
+
+// detach() unhooks a node from wherever it currently lives.
+root.findNode { it == "Germany" }?.detach()
+
+// clear() removes every descendant of the node.
+root.clear()
 ```
 
 ## Optional modules
 
-The core `tree-structure` artifact has no third-party dependencies. Ecosystem integrations ship as
-separate, opt-in artifacts that depend on the core.
+The core artifact has no third-party dependencies. Each integration is a separate, opt-in artifact
+that depends on the core.
 
-### Serialization — `tree-structure-serialization`
+### Serialization (`tree-structure-serialization`)
 
-`kotlinx.serialization` support. A `TreeNode` holds a parent back-reference (a cycle), so it cannot
-be `@Serializable` directly — convert to/from the acyclic `TreeNodeDto` instead.
+`kotlinx.serialization` support. A `TreeNode` keeps a reference back to its parent, so it cannot be
+`@Serializable` directly. Convert to and from the acyclic `TreeNodeDto` instead.
 
 ```kotlin
 implementation("com.github.adriankuta:tree-structure-serialization:4.0.0")
 ```
-
 ```kotlin
-val json = Json.encodeToString(tree.toDto())
+val json = Json.encodeToString(root.toDto())
 val restored = Json.decodeFromString<TreeNodeDto<String>>(json).toTreeNode()
 ```
 
-### Coroutines — `tree-structure-coroutines`
+### Coroutines (`tree-structure-coroutines`)
 
-Traverse a tree as a cold `Flow` (handy in coroutine/`ViewModel` pipelines).
+Traverse a tree as a cold `Flow`, which is handy inside coroutine and `ViewModel` pipelines.
 
 ```kotlin
 implementation("com.github.adriankuta:tree-structure-coroutines:4.0.0")
 ```
-
 ```kotlin
-tree.preOrderFlow().collect { println(it.value) }
-tree.asFlow(TreeNodeIterators.LevelOrder).map { it.value }
+root.preOrderFlow().collect { println(it.value) }
+root.asFlow(TreeNodeIterators.LevelOrder).map { it.value }
 ```
 
-### Compose UI — `tree-structure-compose`
+### Compose UI (`tree-structure-compose`)
 
 A `LazyTree` composable for Compose Multiplatform (JVM/desktop, iOS, Wasm). Only the visible nodes
 are composed, and you decide how each node looks:
@@ -208,7 +184,6 @@ are composed, and you decide how each node looks:
 ```kotlin
 implementation("com.github.adriankuta:tree-structure-compose:4.0.0")
 ```
-
 ```kotlin
 LazyTree(root) { node, depth, expanded, toggle ->
     Row(Modifier.padding(start = (depth * 16).dp).clickable(onClick = toggle)) {
@@ -218,37 +193,24 @@ LazyTree(root) { node, depth, expanded, toggle ->
 }
 ```
 
-## Publishing to Maven Central (central.sonatype.com)
+## Notes
 
-This project is configured to publish artifacts to Maven Central via the Sonatype Central Portal.
+`TreeNode` is mutable and not thread-safe. Add your own synchronization if you share a tree across
+threads, and do not modify a tree while you iterate it. Equality is by reference; use
+`structurallyEquals` to compare two trees by value and shape.
 
-There are two supported ways to publish:
+Coming from 3.x? See [CHANGELOG.md](CHANGELOG.md) for the 4.0 migration notes.
 
-1) Via GitHub Actions (recommended)
-- Create a GitHub Release (tag) in this repository. When a release is published, the workflow .github/workflows/publishRelease.yml runs automatically.
-- The workflow uses the Gradle task publishToMavenCentral to upload artifacts through the Central Portal.
-- Make sure these repository secrets are configured in GitHub:
-  - MAVEN_CENTRAL_USERNAME — Your Sonatype Central username (not email).
-  - MAVEN_CENTRAL_PASSWORD — Your Sonatype Central password or a token from central.sonatype.com.
-  - SIGNING_KEY — ASCII‑armored GPG private key (exported, single line; for in‑memory signing).
-  - SIGNING_PASSWORD — Passphrase for the key above.
-- The workflow uses JDK 21 and publishes the version defined in build.gradle.kts.
+## Releasing (maintainers)
 
-2) Locally via Gradle
-- Ensure you have a Sonatype Central account and that the groupId com.github.adriankuta is verified in central.sonatype.com (Namespace Rules → Verify).
-- Export the same credentials/signing values as environment variables or pass them as Gradle properties:
-  - ORG_GRADLE_PROJECT_mavenCentralUsername
-  - ORG_GRADLE_PROJECT_mavenCentralPassword
-  - ORG_GRADLE_PROJECT_signingInMemoryKey
-  - ORG_GRADLE_PROJECT_signingInMemoryKeyPassword
-- Then run:
-  - ./gradlew publishToMavenCentral
-- For snapshot publishing, set -Psnapshot=true (the version is derived from PUBLISH_VERSION with -SNAPSHOT).
-
-Notes
-- Publishing is powered by the com.vanniktech.maven.publish Gradle plugin and Sonatype Central Portal (no legacy Nexus staging URLs needed).
-- The plugin is configured to sign all publications. Coordinates and POM metadata are defined in build.gradle.kts.
-- If using the combined task is preferred, you can also run publishAndReleaseToMavenCentral when automatic release is enabled; this repository currently uploads with publishToMavenCentral from CI.
+Releases go to Maven Central through the Sonatype Central Portal using the
+`com.vanniktech.maven.publish` plugin. Creating a GitHub release runs
+`.github/workflows/publishRelease.yml`, which signs and uploads every module; the deployment is then
+published from central.sonatype.com. The published version comes from `PUBLISH_VERSION` in
+`build.gradle.kts`. CI needs the `MAVEN_CENTRAL_USERNAME`, `MAVEN_CENTRAL_PASSWORD`, `SIGNING_KEY`,
+and `SIGNING_PASSWORD` repository secrets. To publish from a local machine, set the matching
+`ORG_GRADLE_PROJECT_*` properties and run `./gradlew publishToMavenCentral` (add `-Psnapshot=true`
+for a snapshot build).
 
 ## License
 
@@ -273,5 +235,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----

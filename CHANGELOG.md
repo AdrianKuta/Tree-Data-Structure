@@ -6,6 +6,11 @@ All notable changes to this project are documented here. The format is based on
 
 ## [Unreleased]
 
+### Changed
+- Rewrote the README for clarity: one consistent example tree, task-oriented sections
+  (building, traversal, navigation, functional, utilities, mutating), per-module usage, and a
+  condensed maintainer "Releasing" section.
+
 ## [4.0.0]
 
 A breaking release that cleans up the core API and enforces an explicit public surface.
