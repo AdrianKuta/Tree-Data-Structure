@@ -6,6 +6,10 @@ All notable changes to this project are documented here. The format is based on
 
 ## [Unreleased]
 
+### Added
+- Structural mutation helpers on `TreeNode`: `insertChild`, `removeChildAt`, `replaceChild`,
+  `moveChild`, `addChildren`, and `sortChildren`.
+
 ### Changed
 - Rewrote the README for clarity: one consistent example tree, task-oriented sections
   (building, traversal, navigation, functional, utilities, mutating), per-module usage, and a

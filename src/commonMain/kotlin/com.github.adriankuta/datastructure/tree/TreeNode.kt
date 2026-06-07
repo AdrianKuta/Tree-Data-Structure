@@ -61,6 +61,19 @@ public open class TreeNode<T>(public val value: T, public val treeIterator: Tree
      *   a cycle (i.e. [child] is this node or one of its ancestors).
      */
     public fun addChild(child: TreeNode<T>) {
+        validateAttachable(child)
+        child._parent = this
+        _children.add(child)
+    }
+
+    /**
+     * Validates that [child] can be attached as a direct child of this node, throwing if it cannot.
+     *
+     * @param child the node about to be attached.
+     * @throws TreeNodeException if [child] already has a parent, or if attaching it here would create
+     *   a cycle (i.e. [child] is this node or one of its ancestors).
+     */
+    private fun validateAttachable(child: TreeNode<T>) {
         if (child._parent != null) {
             throw TreeNodeException("$child already has a parent; call detach() before re-attaching it.")
         }
@@ -78,8 +91,6 @@ public open class TreeNode<T>(public val value: T, public val treeIterator: Tree
                 ancestor = ancestor._parent
             }
         }
-        child._parent = this
-        _children.add(child)
     }
 
     /**
@@ -116,6 +127,102 @@ public open class TreeNode<T>(public val value: T, public val treeIterator: Tree
         val removed = _children.remove(child)
         if (removed) child._parent = null
         return removed
+    }
+
+    /**
+     * Inserts [child] as a direct child of this node at the given [index], shifting any existing
+     * children at and after [index] one position to the right.
+     *
+     * @param index the position at which to insert [child]; must be in `0..children.size`.
+     * @param child a node that is not already attached to a tree. To move a node that already has a
+     *   parent, call [detach] on it first.
+     * @throws IndexOutOfBoundsException if [index] is out of range.
+     * @throws TreeNodeException if [child] already has a parent, or if attaching it here would create
+     *   a cycle (i.e. [child] is this node or one of its ancestors).
+     */
+    public fun insertChild(index: Int, child: TreeNode<T>) {
+        validateAttachable(child)
+        child._parent = this
+        _children.add(index, child)
+    }
+
+    /**
+     * Removes the direct child at the given [index], detaching it (its parent becomes `null`).
+     *
+     * @param index the position of the child to remove; must be in `0 until children.size`.
+     * @return the detached child that was at [index].
+     * @throws IndexOutOfBoundsException if [index] is out of range.
+     */
+    public fun removeChildAt(index: Int): TreeNode<T> {
+        val removed = _children.removeAt(index)
+        removed._parent = null
+        return removed
+    }
+
+    /**
+     * Replaces the direct child at the given [index] with [child], detaching the previous child
+     * (its parent becomes `null`).
+     *
+     * @param index the position of the child to replace; must be in `0 until children.size`.
+     * @param child a node that is not already attached to a tree. To move a node that already has a
+     *   parent, call [detach] on it first.
+     * @return the previous child that was at [index], now detached.
+     * @throws IndexOutOfBoundsException if [index] is out of range.
+     * @throws TreeNodeException if [child] already has a parent, or if attaching it here would create
+     *   a cycle (i.e. [child] is this node or one of its ancestors).
+     */
+    public fun replaceChild(index: Int, child: TreeNode<T>): TreeNode<T> {
+        validateAttachable(child)
+        val old = _children[index]
+        old._parent = null
+        child._parent = this
+        _children[index] = child
+        return old
+    }
+
+    /**
+     * Moves an existing direct [child] to a new position within this node's [children].
+     *
+     * [toIndex] is coerced into the valid range, so out-of-range targets clamp to the first or last
+     * position. Because [child] is already a direct child, no re-parenting or cycle check is needed.
+     *
+     * @param child the node to reorder; must already be a direct child of this node.
+     * @param toIndex the target position for [child] after removal, coerced into `0..children.size`.
+     * @return `true` if [child] was a direct child and has been moved; `false` otherwise.
+     */
+    public fun moveChild(child: TreeNode<T>, toIndex: Int): Boolean {
+        val from = _children.indexOf(child)
+        if (from < 0) return false
+        _children.removeAt(from)
+        _children.add(toIndex.coerceIn(0, _children.size), child)
+        return true
+    }
+
+    /**
+     * Adds each of [children] as a direct child of this node, in order, validating each one the same
+     * way as [addChild].
+     *
+     * Validation is performed per node as it is added, so if one node fails the children added before
+     * it remain attached (the same partial-application behaviour as calling [addChild] in a loop).
+     *
+     * @param children nodes that are not already attached to a tree.
+     * @throws TreeNodeException if any node already has a parent, or if attaching it here would create
+     *   a cycle (i.e. it is this node or one of its ancestors).
+     */
+    public fun addChildren(vararg children: TreeNode<T>) {
+        for (child in children) {
+            addChild(child)
+        }
+    }
+
+    /**
+     * Sorts this node's direct [children] in place according to the given [comparator]. Only the
+     * immediate children are reordered; their subtrees are left untouched.
+     *
+     * @param comparator the comparator used to order the children.
+     */
+    public fun sortChildren(comparator: Comparator<TreeNode<T>>) {
+        _children.sortWith(comparator)
     }
 
     /**
