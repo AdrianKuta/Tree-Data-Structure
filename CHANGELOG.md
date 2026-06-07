@@ -11,6 +11,10 @@ All notable changes to this project are documented here. The format is based on
   `moveChild`, `addChildren`, and `sortChildren`.
 - Tree query extensions: `lowestCommonAncestor`, `distance`, `pathBetween`, and `contains` for
   finding common ancestors, edge distances, the path between two nodes, and value membership.
+- Customizable `prettyString(connectors, render)` extension: choose connector glyphs via
+  `TreeConnectors` (`Default` box-drawing or `Ascii`) and supply a per-node renderer that receives
+  the value, its depth and whether it is its parent's last child. The all-defaults call is
+  byte-identical to the existing no-arg `prettyString()`.
 
 ### Changed
 - Rewrote the README for clarity: one consistent example tree, task-oriented sections

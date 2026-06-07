@@ -6,6 +6,29 @@ public final class com/github/adriankuta/datastructure/tree/ChildDeclarationInte
 	public static synthetic fun child$default (Lcom/github/adriankuta/datastructure/tree/ChildDeclarationInterface;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lcom/github/adriankuta/datastructure/tree/TreeNode;
 }
 
+public final class com/github/adriankuta/datastructure/tree/TreeConnectors {
+	public static final field Companion Lcom/github/adriankuta/datastructure/tree/TreeConnectors$Companion;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lcom/github/adriankuta/datastructure/tree/TreeConnectors;
+	public static synthetic fun copy$default (Lcom/github/adriankuta/datastructure/tree/TreeConnectors;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/github/adriankuta/datastructure/tree/TreeConnectors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBranch ()Ljava/lang/String;
+	public final fun getEmpty ()Ljava/lang/String;
+	public final fun getLastBranch ()Ljava/lang/String;
+	public final fun getVertical ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/github/adriankuta/datastructure/tree/TreeConnectors$Companion {
+	public final fun getAscii ()Lcom/github/adriankuta/datastructure/tree/TreeConnectors;
+	public final fun getDefault ()Lcom/github/adriankuta/datastructure/tree/TreeConnectors;
+}
+
 public class com/github/adriankuta/datastructure/tree/TreeNode : com/github/adriankuta/datastructure/tree/ChildDeclarationInterface, java/lang/Iterable, kotlin/jvm/internal/markers/KMappedMarker {
 	public fun <init> (Ljava/lang/Object;Lcom/github/adriankuta/datastructure/tree/iterators/TreeNodeIterators;)V
 	public synthetic fun <init> (Ljava/lang/Object;Lcom/github/adriankuta/datastructure/tree/iterators/TreeNodeIterators;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
@@ -55,6 +78,11 @@ public final class com/github/adriankuta/datastructure/tree/TreeNodeNavigationEx
 	public static final fun leaves (Lcom/github/adriankuta/datastructure/tree/TreeNode;)Ljava/util/List;
 	public static final fun root (Lcom/github/adriankuta/datastructure/tree/TreeNode;)Lcom/github/adriankuta/datastructure/tree/TreeNode;
 	public static final fun siblings (Lcom/github/adriankuta/datastructure/tree/TreeNode;)Ljava/util/List;
+}
+
+public final class com/github/adriankuta/datastructure/tree/TreeNodePrettyPrintExtKt {
+	public static final fun prettyString (Lcom/github/adriankuta/datastructure/tree/TreeNode;Lcom/github/adriankuta/datastructure/tree/TreeConnectors;Lkotlin/jvm/functions/Function3;)Ljava/lang/String;
+	public static synthetic fun prettyString$default (Lcom/github/adriankuta/datastructure/tree/TreeNode;Lcom/github/adriankuta/datastructure/tree/TreeConnectors;Lkotlin/jvm/functions/Function3;ILjava/lang/Object;)Ljava/lang/String;
 }
 
 public final class com/github/adriankuta/datastructure/tree/TreeNodeQueryExtKt {
