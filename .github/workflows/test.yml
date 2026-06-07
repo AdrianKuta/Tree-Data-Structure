@@ -2,8 +2,16 @@ name: Test
 
 on:
   push:
-    branches-ignore: [master]
+    branches: [master]
+  pull_request:
   workflow_call:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   test:
@@ -27,5 +35,7 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
       - name: Test
         run: ./gradlew ${{ matrix.tasks }} --console=plain

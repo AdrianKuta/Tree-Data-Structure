@@ -26,6 +26,8 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
       - name: Generate API docs
         run: ./gradlew :dokkaGeneratePublicationHtml --console=plain
       - name: Upload Pages artifact
