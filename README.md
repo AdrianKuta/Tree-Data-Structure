@@ -30,14 +30,14 @@ Gradle (Kotlin DSL):
 ```kotlin
 // commonMain for KMP projects, or any sourceSet/module where you need it
 dependencies {
-    implementation("com.github.adriankuta:tree-structure:4.0.0") // latest version is on the badge above
+    implementation("com.github.adriankuta:tree-structure:4.1.0") // latest version is on the badge above
 }
 ```
 
 Gradle (Groovy):
 ```groovy
 dependencies {
-    implementation "com.github.adriankuta:tree-structure:4.0.0"
+    implementation "com.github.adriankuta:tree-structure:4.1.0"
 }
 ```
 
@@ -46,7 +46,7 @@ Maven:
 <dependency>
   <groupId>com.github.adriankuta</groupId>
   <artifactId>tree-structure</artifactId>
-  <version>4.0.0</version>
+  <version>4.1.0</version>
 </dependency>
 ```
 
@@ -160,7 +160,7 @@ that depends on the core.
 `@Serializable` directly. Convert to and from the acyclic `TreeNodeDto` instead.
 
 ```kotlin
-implementation("com.github.adriankuta:tree-structure-serialization:4.0.0")
+implementation("com.github.adriankuta:tree-structure-serialization:4.1.0")
 ```
 ```kotlin
 val json = Json.encodeToString(root.toDto())
@@ -172,7 +172,7 @@ val restored = Json.decodeFromString<TreeNodeDto<String>>(json).toTreeNode()
 Traverse a tree as a cold `Flow`, which is handy inside coroutine and `ViewModel` pipelines.
 
 ```kotlin
-implementation("com.github.adriankuta:tree-structure-coroutines:4.0.0")
+implementation("com.github.adriankuta:tree-structure-coroutines:4.1.0")
 ```
 ```kotlin
 root.preOrderFlow().collect { println(it.value) }
@@ -185,7 +185,7 @@ A `LazyTree` composable for Compose Multiplatform (JVM/desktop, iOS, Wasm). Only
 are composed, and you decide how each node looks:
 
 ```kotlin
-implementation("com.github.adriankuta:tree-structure-compose:4.0.0")
+implementation("com.github.adriankuta:tree-structure-compose:4.1.0")
 ```
 ```kotlin
 LazyTree(root) { node, depth, expanded, toggle ->
@@ -194,6 +194,23 @@ LazyTree(root) { node, depth, expanded, toggle ->
         Text(node.value.toString())
     }
 }
+```
+
+### Immutable (`tree-structure-immutable`)
+
+A persistent `ImmutableTreeNode` with structural sharing. Every operation (`addChild`,
+`removeChild`, `mapValues`) returns a **new** root and leaves the original untouched; unchanged
+subtrees are reused, so updates are cheap and old roots stay valid. Backed by
+`kotlinx.collections.immutable`.
+
+```kotlin
+implementation("com.github.adriankuta:tree-structure-immutable:4.1.0")
+```
+```kotlin
+val root = ImmutableTreeNode("World").addChild(ImmutableTreeNode("Europe"))
+val bigger = root.addChild(ImmutableTreeNode("Asia")) // root is unchanged; bigger is a new tree
+
+bigger.preOrder().forEach { println(it.value) } // pre/post/level-order, nodeCount(), height()
 ```
 
 ## Notes

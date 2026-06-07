@@ -6,6 +6,8 @@ All notable changes to this project are documented here. The format is based on
 
 ## [Unreleased]
 
+## [4.1.0] - 2026-06-07
+
 ### Added
 - Structural mutation helpers on `TreeNode`: `insertChild`, `removeChildAt`, `replaceChild`,
   `moveChild`, `addChildren`, and `sortChildren`.
@@ -89,7 +91,8 @@ A breaking release that cleans up the core API and enforces an explicit public s
 ## [3.1.3]
 - iOS targets and Maven Central (Sonatype Central Portal) publishing.
 
-[Unreleased]: https://github.com/AdrianKuta/Tree-Data-Structure/compare/v4.0.0...HEAD
+[Unreleased]: https://github.com/AdrianKuta/Tree-Data-Structure/compare/v4.1.0...HEAD
+[4.1.0]: https://github.com/AdrianKuta/Tree-Data-Structure/compare/v4.0.0...v4.1.0
 [4.0.0]: https://github.com/AdrianKuta/Tree-Data-Structure/compare/v3.4.0...v4.0.0
 [3.4.0]: https://github.com/AdrianKuta/Tree-Data-Structure/compare/v3.1.5...v3.4.0
 [3.1.5]: https://github.com/AdrianKuta/Tree-Data-Structure/compare/v3.1.3...v3.1.5
