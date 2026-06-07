@@ -47,6 +47,19 @@ repositories {
     mavenCentral()
 }
 
+dokka {
+    dokkaSourceSets.configureEach {
+        sourceLink {
+            // Resolve this module's GitHub source path relative to the repo root.
+            localDirectory.set(projectDir.resolve("src"))
+            val module = projectDir.relativeTo(rootDir).invariantSeparatorsPath
+            val prefix = if (module.isEmpty()) "" else "$module/"
+            remoteUrl("https://github.com/AdrianKuta/Tree-Data-Structure/blob/master/${prefix}src")
+            remoteLineSuffix.set("#L")
+        }
+    }
+}
+
 kotlin {
     explicitApi()
     jvmToolchain(21)

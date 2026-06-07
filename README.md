@@ -2,6 +2,9 @@
 [![maven](https://img.shields.io/maven-central/v/com.github.adriankuta/tree-structure?style=plastic)](https://mvnrepository.com/artifact/com.github.adriankuta/tree-structure)
 [![License: MIT](https://img.shields.io/github/license/AdrianKuta/Tree-Data-Structure?style=plastic)](https://github.com/AdrianKuta/Tree-Data-Structure/blob/master/LICENSE)
 [![Publish](https://github.com/AdrianKuta/Tree-Data-Structure/actions/workflows/publishRelease.yml/badge.svg)](https://github.com/AdrianKuta/Tree-Data-Structure/actions/workflows/publishRelease.yml)
+[![API docs](https://img.shields.io/badge/docs-API%20reference-blue?style=plastic)](https://adriankuta.github.io/Tree-Data-Structure/)
+
+📖 **[API reference](https://adriankuta.github.io/Tree-Data-Structure/)** — full KDoc for the core and all modules.
 
 A lightweight n-ary tree for Kotlin Multiplatform. You get a generic `TreeNode<T>`, a small DSL for
 building trees, three traversal orders, lazy `Sequence` traversal, and a set of navigation and

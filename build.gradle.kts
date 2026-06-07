@@ -59,6 +59,29 @@ repositories {
     mavenCentral()
 }
 
+dependencies {
+    // Include this module's own docs in the aggregation — DGP v2 requires the
+    // aggregating project to list itself explicitly.
+    dokka(project(":"))
+    dokka(project(":tree-structure-serialization"))
+    dokka(project(":tree-structure-coroutines"))
+    dokka(project(":tree-structure-compose"))
+}
+
+dokka {
+    moduleName.set("Tree Data Structure")
+    dokkaSourceSets.configureEach {
+        sourceLink {
+            localDirectory.set(projectDir.resolve("src"))
+            // For the root project projectDir == rootDir, so `module` is "" and links resolve to /blob/master/src.
+            val module = projectDir.relativeTo(rootDir).invariantSeparatorsPath
+            val prefix = if (module.isEmpty()) "" else "$module/"
+            remoteUrl("https://github.com/AdrianKuta/Tree-Data-Structure/blob/master/${prefix}src")
+            remoteLineSuffix.set("#L")
+        }
+    }
+}
+
 kotlin {
     explicitApi()
     jvmToolchain(21)
