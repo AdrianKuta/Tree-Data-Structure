@@ -57,6 +57,13 @@ public final class com/github/adriankuta/datastructure/tree/TreeNodeNavigationEx
 	public static final fun siblings (Lcom/github/adriankuta/datastructure/tree/TreeNode;)Ljava/util/List;
 }
 
+public final class com/github/adriankuta/datastructure/tree/TreeNodeQueryExtKt {
+	public static final fun contains (Lcom/github/adriankuta/datastructure/tree/TreeNode;Ljava/lang/Object;)Z
+	public static final fun distance (Lcom/github/adriankuta/datastructure/tree/TreeNode;Lcom/github/adriankuta/datastructure/tree/TreeNode;)Ljava/lang/Integer;
+	public static final fun lowestCommonAncestor (Lcom/github/adriankuta/datastructure/tree/TreeNode;Lcom/github/adriankuta/datastructure/tree/TreeNode;)Lcom/github/adriankuta/datastructure/tree/TreeNode;
+	public static final fun pathBetween (Lcom/github/adriankuta/datastructure/tree/TreeNode;Lcom/github/adriankuta/datastructure/tree/TreeNode;)Ljava/util/List;
+}
+
 public final class com/github/adriankuta/datastructure/tree/TreeNodeSequenceExtKt {
 	public static final fun asSequence (Lcom/github/adriankuta/datastructure/tree/TreeNode;Lcom/github/adriankuta/datastructure/tree/iterators/TreeNodeIterators;)Lkotlin/sequences/Sequence;
 	public static synthetic fun asSequence$default (Lcom/github/adriankuta/datastructure/tree/TreeNode;Lcom/github/adriankuta/datastructure/tree/iterators/TreeNodeIterators;ILjava/lang/Object;)Lkotlin/sequences/Sequence;

@@ -9,6 +9,8 @@ All notable changes to this project are documented here. The format is based on
 ### Added
 - Structural mutation helpers on `TreeNode`: `insertChild`, `removeChildAt`, `replaceChild`,
   `moveChild`, `addChildren`, and `sortChildren`.
+- Tree query extensions: `lowestCommonAncestor`, `distance`, `pathBetween`, and `contains` for
+  finding common ancestors, edge distances, the path between two nodes, and value membership.
 
 ### Changed
 - Rewrote the README for clarity: one consistent example tree, task-oriented sections
