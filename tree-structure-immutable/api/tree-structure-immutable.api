@@ -1,0 +1,25 @@
+public final class com/github/adriankuta/datastructure/tree/immutable/ImmutableTreeNode {
+	public fun <init> (Ljava/lang/Object;Lkotlinx/collections/immutable/PersistentList;)V
+	public synthetic fun <init> (Ljava/lang/Object;Lkotlinx/collections/immutable/PersistentList;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun addChild (Lcom/github/adriankuta/datastructure/tree/immutable/ImmutableTreeNode;)Lcom/github/adriankuta/datastructure/tree/immutable/ImmutableTreeNode;
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun component2 ()Lkotlinx/collections/immutable/PersistentList;
+	public final fun copy (Ljava/lang/Object;Lkotlinx/collections/immutable/PersistentList;)Lcom/github/adriankuta/datastructure/tree/immutable/ImmutableTreeNode;
+	public static synthetic fun copy$default (Lcom/github/adriankuta/datastructure/tree/immutable/ImmutableTreeNode;Ljava/lang/Object;Lkotlinx/collections/immutable/PersistentList;ILjava/lang/Object;)Lcom/github/adriankuta/datastructure/tree/immutable/ImmutableTreeNode;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getChildren ()Lkotlinx/collections/immutable/PersistentList;
+	public final fun getValue ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public final fun mapValues (Lkotlin/jvm/functions/Function1;)Lcom/github/adriankuta/datastructure/tree/immutable/ImmutableTreeNode;
+	public final fun removeChild (Lcom/github/adriankuta/datastructure/tree/immutable/ImmutableTreeNode;)Lcom/github/adriankuta/datastructure/tree/immutable/ImmutableTreeNode;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/github/adriankuta/datastructure/tree/immutable/ImmutableTreeNodeKt {
+	public static final fun height (Lcom/github/adriankuta/datastructure/tree/immutable/ImmutableTreeNode;)I
+	public static final fun levelOrder (Lcom/github/adriankuta/datastructure/tree/immutable/ImmutableTreeNode;)Ljava/util/List;
+	public static final fun nodeCount (Lcom/github/adriankuta/datastructure/tree/immutable/ImmutableTreeNode;)I
+	public static final fun postOrder (Lcom/github/adriankuta/datastructure/tree/immutable/ImmutableTreeNode;)Ljava/util/List;
+	public static final fun preOrder (Lcom/github/adriankuta/datastructure/tree/immutable/ImmutableTreeNode;)Ljava/util/List;
+}
+
