@@ -15,6 +15,9 @@ All notable changes to this project are documented here. The format is based on
   `TreeConnectors` (`Default` box-drawing or `Ascii`) and supply a per-node renderer that receives
   the value, its depth and whether it is its parent's last child. The all-defaults call is
   byte-identical to the existing no-arg `prettyString()`.
+- New `tree-structure-immutable` module: a persistent `ImmutableTreeNode` with structural sharing
+  (`addChild`/`removeChild`/`mapValues` return new roots; pre/post/level-order traversals,
+  `nodeCount`, and `height`).
 
 ### Changed
 - Rewrote the README for clarity: one consistent example tree, task-oriented sections

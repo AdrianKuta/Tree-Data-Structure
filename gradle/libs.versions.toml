@@ -6,6 +6,7 @@ binaryCompatibilityValidator = "0.16.3"
 kover = "0.8.3"
 coroutines = "1.9.0"
 kotlinxSerialization = "1.7.3"
+kotlinxCollectionsImmutable = "0.3.8"
 composeMultiplatform = "1.7.3"
 
 [plugins]
@@ -22,3 +23,4 @@ composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "k
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
+kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
