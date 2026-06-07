@@ -2,7 +2,7 @@ package com.github.adriankuta.datastructure.tree
 
 import kotlin.jvm.JvmSynthetic
 
-interface ChildDeclarationInterface<T> {
+public interface ChildDeclarationInterface<T> {
 
     /**
      * This method is used to easily create child in node.
@@ -20,5 +20,5 @@ interface ChildDeclarationInterface<T> {
      * @return New created TreeNode.
      */
     @JvmSynthetic
-    fun child(value: T, childDeclaration: ChildDeclaration<T>? = null): TreeNode<T>
+    public fun child(value: T, childDeclaration: ChildDeclaration<T>? = null): TreeNode<T>
 }

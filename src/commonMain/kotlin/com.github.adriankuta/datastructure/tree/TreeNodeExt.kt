@@ -3,7 +3,7 @@ package com.github.adriankuta.datastructure.tree
 import com.github.adriankuta.datastructure.tree.iterators.TreeNodeIterators
 import kotlin.jvm.JvmSynthetic
 
-typealias ChildDeclaration<T> = ChildDeclarationInterface<T>.() -> Unit
+public typealias ChildDeclaration<T> = ChildDeclarationInterface<T>.() -> Unit
 
 /**
  * This method can be used to initialize new tree.
@@ -14,7 +14,7 @@ typealias ChildDeclaration<T> = ChildDeclarationInterface<T>.() -> Unit
  * @see [ChildDeclarationInterface.child]
  */
 @JvmSynthetic
-inline fun <reified T> tree(
+public inline fun <reified T> tree(
     root: T,
     defaultIterator: TreeNodeIterators = TreeNodeIterators.PreOrder,
     childDeclaration: ChildDeclaration<T>

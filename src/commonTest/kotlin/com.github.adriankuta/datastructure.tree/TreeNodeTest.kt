@@ -51,7 +51,7 @@ class TreeNodeTest {
         )
 
         root.removeChild(curdNode)
-        root.removeChild(gingerTeaNode)
+        gingerTeaNode.detach()
         assertEquals(
             "Root\n" +
                     "└── Beverages\n" +

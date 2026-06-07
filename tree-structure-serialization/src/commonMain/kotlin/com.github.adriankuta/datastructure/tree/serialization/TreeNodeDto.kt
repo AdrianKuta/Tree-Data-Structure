@@ -14,8 +14,8 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 public data class TreeNodeDto<T>(
-    val value: T,
-    val children: List<TreeNodeDto<T>> = emptyList(),
+    public val value: T,
+    public val children: List<TreeNodeDto<T>> = emptyList(),
 )
 
 /** Converts this subtree into a serializable [TreeNodeDto], preserving values and shape. */

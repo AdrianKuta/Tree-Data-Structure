@@ -104,9 +104,8 @@ World
 val root = TreeNode("root")
 // ... build your tree
 
-// Choose iteration order (default is PreOrder)
-root.treeIterator = TreeNodeIterators.PostOrder
-for (node in root) println(node.value)
+// Choose iteration order per call (the default order is set in the constructor and is read-only)
+for (node in root.asSequence(TreeNodeIterators.PostOrder)) println(node.value)
 
 // Utilities
 root.nodeCount()   // number of descendants
@@ -114,10 +113,10 @@ root.height()      // longest path to a leaf (in edges)
 root.depth()       // distance from current node to the root
 val path = root.path(root.children.first()) // nodes from descendant up to root
 
-// Mutations
+// Mutations — removeChild removes a *direct* child; detach() unhooks a node from wherever it lives
 val child = root.children.first()
-root.removeChild(child)
-root.clear()       // remove entire subtree
+root.removeChild(child)   // child is now detached from root
+root.clear()              // remove all descendants of root
 ```
 
 ### Lazy traversal with Sequence

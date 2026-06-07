@@ -37,13 +37,11 @@ class TreeNodeStackSafetyTest {
 
     @Test
     fun postOrderIterationDoesNotOverflowOnDeepTree() {
-        val tree = deepChain().apply { treeIterator = TreeNodeIterators.PostOrder }
-        assertEquals(depth + 1, tree.toList().size)
+        assertEquals(depth + 1, deepChain().asSequence(TreeNodeIterators.PostOrder).count())
     }
 
     @Test
     fun preOrderIterationDoesNotOverflowOnDeepTree() {
-        val tree = deepChain().apply { treeIterator = TreeNodeIterators.PreOrder }
-        assertEquals(depth + 1, tree.toList().size)
+        assertEquals(depth + 1, deepChain().asSequence(TreeNodeIterators.PreOrder).count())
     }
 }

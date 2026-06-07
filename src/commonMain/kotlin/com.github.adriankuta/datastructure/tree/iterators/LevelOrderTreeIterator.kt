@@ -20,7 +20,7 @@ import com.github.adriankuta.datastructure.tree.TreeNode
  * Output: 1 2 3 4 5 6 7 8 9 10 11 12 13
  * ```
  */
-class LevelOrderTreeIterator<T>(root: TreeNode<T>) : Iterator<TreeNode<T>> {
+public class LevelOrderTreeIterator<T>(root: TreeNode<T>) : Iterator<TreeNode<T>> {
 
     private val stack = ArrayDeque<TreeNode<T>>()
 
@@ -28,9 +28,9 @@ class LevelOrderTreeIterator<T>(root: TreeNode<T>) : Iterator<TreeNode<T>> {
         stack.addLast(root)
     }
 
-    override fun hasNext(): Boolean = stack.isNotEmpty()
+    public override fun hasNext(): Boolean = stack.isNotEmpty()
 
-    override fun next(): TreeNode<T> {
+    public override fun next(): TreeNode<T> {
         val node =  stack.removeFirst()
         node.children
             .forEach { stack.addLast(it) }

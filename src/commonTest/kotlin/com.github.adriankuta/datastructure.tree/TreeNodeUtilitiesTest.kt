@@ -1,10 +1,9 @@
 package com.github.adriankuta.datastructure.tree
 
-import com.github.adriankuta.datastructure.tree.exceptions.TreeNodeException
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
+import kotlin.test.assertNull
 
 class TreeNodeUtilitiesTest {
 
@@ -43,12 +42,12 @@ class TreeNodeUtilitiesTest {
     }
 
     @Test
-    fun pathThrowsWhenNotADescendant() {
-        assertFailsWith<TreeNodeException> { root.path(TreeNode(99)) }
+    fun pathReturnsNullWhenNotADescendant() {
+        assertNull(root.path(TreeNode(99)))
     }
 
     @Test
-    fun pathThrowsWhenDescendantIsRootItself() {
-        assertFailsWith<TreeNodeException> { root.path(root) }
+    fun pathReturnsNullWhenDescendantIsRootItself() {
+        assertNull(root.path(root))
     }
 }

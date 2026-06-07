@@ -27,14 +27,14 @@ import kotlin.jvm.JvmSynthetic
  * @param treeIterator the default traversal order used by [iterator]. Prefer the
  *   `asSequence(order)` / `preOrderSequence()` extensions to choose an order without mutating state.
  */
-open class TreeNode<T>(val value: T, var treeIterator: TreeNodeIterators = PreOrder) : Iterable<TreeNode<T>>, ChildDeclarationInterface<T> {
+public open class TreeNode<T>(public val value: T, public val treeIterator: TreeNodeIterators = PreOrder) : Iterable<TreeNode<T>>, ChildDeclarationInterface<T> {
 
     private var _parent: TreeNode<T>? = null
 
     /**
      * The converse notion of a child, an immediate ancestor.
      */
-    val parent: TreeNode<T>?
+    public val parent: TreeNode<T>?
         get() = _parent
 
     private val _children = mutableListOf<TreeNode<T>>()
@@ -42,28 +42,53 @@ open class TreeNode<T>(val value: T, var treeIterator: TreeNodeIterators = PreOr
     /**
      * A group of nodes with the same parent.
      */
-    val children: List<TreeNode<T>>
+    public val children: List<TreeNode<T>>
         get() = _children
 
     /**
      * Checks whether the current tree node is the root of the tree
      * @return `true` if the current tree node is root of the tree, `false` otherwise.
      */
-    val isRoot: Boolean
+    public val isRoot: Boolean
         get() = _parent == null
 
     /**
-     * Add new child to current node or root.
+     * Adds [child] as a direct child of this node.
      *
-     * @param child A node which will be directly connected to current node.
+     * @param child a node that is not already attached to a tree. To move a node that already has a
+     *   parent, call [detach] on it first.
+     * @throws TreeNodeException if [child] already has a parent, or if attaching it here would create
+     *   a cycle (i.e. [child] is this node or one of its ancestors).
      */
-    fun addChild(child: TreeNode<T>) {
+    public fun addChild(child: TreeNode<T>) {
+        if (child._parent != null) {
+            throw TreeNodeException("$child already has a parent; call detach() before re-attaching it.")
+        }
+        var ancestor: TreeNode<T>? = this
+        while (ancestor != null) {
+            if (ancestor === child) {
+                throw TreeNodeException("Adding $child here would create a cycle.")
+            }
+            ancestor = ancestor._parent
+        }
         child._parent = this
         _children.add(child)
     }
 
+    /**
+     * Detaches this node from its parent, removing it from the parent's [children].
+     *
+     * @return `true` if this node was attached and is now detached; `false` if it was already a root.
+     */
+    public fun detach(): Boolean {
+        val currentParent = _parent ?: return false
+        currentParent._children.remove(this)
+        _parent = null
+        return true
+    }
+
     @JvmSynthetic
-    override fun child(value: T, childDeclaration: ChildDeclaration<T>?): TreeNode<T> {
+    public override fun child(value: T, childDeclaration: ChildDeclaration<T>?): TreeNode<T> {
         val newChild = TreeNode(value)
         newChild._parent = this
         if (childDeclaration != null)
@@ -73,21 +98,24 @@ open class TreeNode<T>(val value: T, var treeIterator: TreeNodeIterators = PreOr
     }
 
     /**
-     * Removes a single instance of the specified node from this tree, if it is present.
+     * Removes [child] from this node's direct [children], if present.
      *
-     * @return `true` if the node has been successfully removed; `false` if it was not present in the tree.
+     * This only removes a *direct* child of the receiver; it does not reach into other nodes. To
+     * remove a node from wherever it currently lives, call [detach] on it instead.
+     *
+     * @return `true` if [child] was a direct child and has been removed; `false` otherwise.
      */
-    fun removeChild(child: TreeNode<T>): Boolean {
-        val removed = child._parent?._children?.remove(child)
-        child._parent = null
-        return removed ?: false
+    public fun removeChild(child: TreeNode<T>): Boolean {
+        val removed = _children.remove(child)
+        if (removed) child._parent = null
+        return removed
     }
 
     /**
      * This function go through tree and counts children. Root element is not counted.
      * @return All child and nested child count.
      */
-    fun nodeCount(): Int {
+    public fun nodeCount(): Int {
         var count = 0
         val stack = ArrayDeque<TreeNode<T>>()
         stack.addAll(_children)
@@ -102,7 +130,7 @@ open class TreeNode<T>(val value: T, var treeIterator: TreeNodeIterators = PreOr
     /**
      * @return The number of edges on the longest path between current node and a descendant leaf.
      */
-    fun height(): Int {
+    public fun height(): Int {
         var maxDepth = 0
         val stack = ArrayDeque<Pair<TreeNode<T>, Int>>()
         stack.addLast(this to 0)
@@ -118,7 +146,7 @@ open class TreeNode<T>(val value: T, var treeIterator: TreeNodeIterators = PreOr
      * Distance is the number of edges along the shortest path between two nodes.
      * @return The distance between current node and the root.
      */
-    fun depth(): Int {
+    public fun depth(): Int {
         var depth = 0
         var tempParent = parent
 
@@ -130,53 +158,52 @@ open class TreeNode<T>(val value: T, var treeIterator: TreeNodeIterators = PreOr
     }
 
     /**
-     * Returns the collection of nodes, which connect the current node
-     * with its descendants
+     * Returns the chain of nodes from [descendant] up to and including this node, or `null` if
+     * [descendant] is not a strict descendant of this node.
      *
-     * @param descendant the bottom child node for which the path is calculated
-     * @return collection of nodes, which connect the current node with its descendants
-     * @throws TreeNodeException exception that may be thrown in case if the
-     *                           current node does not have such descendant or if the
-     *                           specified tree node is root
+     * @param descendant the node to walk up from.
+     * @return the path `[descendant, …, this]`, or `null` if [descendant] is the root or is not
+     *   located in this node's subtree.
      */
-    @Throws(TreeNodeException::class)
-    fun path(descendant: TreeNode<T>): List<TreeNode<T>> {
-
+    public fun path(descendant: TreeNode<T>): List<TreeNode<T>>? {
+        if (descendant.isRoot) return null
         val path = mutableListOf<TreeNode<T>>()
         var node = descendant
         path.add(node)
         while (!node.isRoot) {
             node = node.parent!!
             path.add(node)
-            if (node == this)
-                return path
+            if (node == this) return path
         }
-        throw TreeNodeException("The specified tree node $descendant is not the descendant of tree node $this")
+        return null
     }
 
     /**
-     * Remove all children from root and every node in tree.
+     * Removes every descendant of this node. Afterwards [children] is empty and all former
+     * descendants are detached (their parent is `null`). This node itself stays attached to its own
+     * parent.
      */
-    fun clear() {
-        val all = ArrayDeque<TreeNode<T>>()
+    public fun clear() {
+        val descendants = ArrayDeque<TreeNode<T>>()
         val stack = ArrayDeque<TreeNode<T>>()
-        stack.addLast(this)
+        stack.addAll(_children)
         while (stack.isNotEmpty()) {
             val node = stack.removeLast()
-            all.addLast(node)
+            descendants.addLast(node)
             stack.addAll(node._children)
         }
-        all.forEach { node ->
+        descendants.forEach { node ->
             node._parent = null
             node._children.clear()
         }
+        _children.clear()
     }
 
-    override fun toString(): String {
+    public override fun toString(): String {
         return value.toString()
     }
 
-    fun prettyString(): String {
+    public fun prettyString(): String {
         val stringBuilder = StringBuilder()
         print(stringBuilder, "", "")
         return stringBuilder.toString()
@@ -198,9 +225,14 @@ open class TreeNode<T>(val value: T, var treeIterator: TreeNodeIterators = PreOr
     }
 
     /**
-     * You can change default iterator by changing [treeIterator] property.
+     * Returns an iterator over this node and its descendants using the default [treeIterator] order.
+     * Use [iterator] with an explicit order, or the `asSequence(order)` extension, to traverse in a
+     * different order without changing this node's default.
      */
-    override fun iterator(): Iterator<TreeNode<T>> = when (treeIterator) {
+    public override fun iterator(): Iterator<TreeNode<T>> = iterator(treeIterator)
+
+    /** Returns an iterator over this node and its descendants in the given [order]. */
+    public fun iterator(order: TreeNodeIterators): Iterator<TreeNode<T>> = when (order) {
         PreOrder -> PreOrderTreeIterator(this)
         PostOrder -> PostOrderTreeIterator(this)
         LevelOrder -> LevelOrderTreeIterator(this)

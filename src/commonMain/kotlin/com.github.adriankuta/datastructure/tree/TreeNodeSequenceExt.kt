@@ -10,7 +10,7 @@ import com.github.adriankuta.datastructure.tree.iterators.TreeNodeIterators
  * traversal up front. Pairs with the Kotlin stdlib, e.g.
  * `root.asSequence().map { it.value }.firstOrNull { it == target }`.
  */
-fun <T> TreeNode<T>.asSequence(
+public fun <T> TreeNode<T>.asSequence(
     order: TreeNodeIterators = TreeNodeIterators.PreOrder,
 ): Sequence<TreeNode<T>> {
     val self = this
@@ -22,10 +22,10 @@ fun <T> TreeNode<T>.asSequence(
 }
 
 /** Lazy pre-order traversal as a [Sequence]. */
-fun <T> TreeNode<T>.preOrderSequence(): Sequence<TreeNode<T>> = asSequence(TreeNodeIterators.PreOrder)
+public fun <T> TreeNode<T>.preOrderSequence(): Sequence<TreeNode<T>> = asSequence(TreeNodeIterators.PreOrder)
 
 /** Lazy post-order traversal as a [Sequence]. */
-fun <T> TreeNode<T>.postOrderSequence(): Sequence<TreeNode<T>> = asSequence(TreeNodeIterators.PostOrder)
+public fun <T> TreeNode<T>.postOrderSequence(): Sequence<TreeNode<T>> = asSequence(TreeNodeIterators.PostOrder)
 
 /** Lazy level-order (breadth-first) traversal as a [Sequence]. */
-fun <T> TreeNode<T>.levelOrderSequence(): Sequence<TreeNode<T>> = asSequence(TreeNodeIterators.LevelOrder)
+public fun <T> TreeNode<T>.levelOrderSequence(): Sequence<TreeNode<T>> = asSequence(TreeNodeIterators.LevelOrder)

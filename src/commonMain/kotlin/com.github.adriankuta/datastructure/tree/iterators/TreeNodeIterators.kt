@@ -5,7 +5,7 @@ package com.github.adriankuta.datastructure.tree.iterators
  * @see PostOrder
  * @see LevelOrder
  */
-enum class TreeNodeIterators {
+public enum class TreeNodeIterators {
     /**
      * Tree is iterated by using `Pre-order Traversal Algorithm"
      * The pre-order traversal is a topologically sorted one,

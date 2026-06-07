@@ -20,7 +20,7 @@ import com.github.adriankuta.datastructure.tree.TreeNode
  * Output: 10 5 11 12 13 6 2 3 7 8 9 4 1
  * ```
  */
-class PostOrderTreeIterator<T>(root: TreeNode<T>) : Iterator<TreeNode<T>> {
+public class PostOrderTreeIterator<T>(root: TreeNode<T>) : Iterator<TreeNode<T>> {
 
     private val result = ArrayDeque<TreeNode<T>>()
 
@@ -37,7 +37,7 @@ class PostOrderTreeIterator<T>(root: TreeNode<T>) : Iterator<TreeNode<T>> {
         }
     }
 
-    override fun hasNext(): Boolean = result.isNotEmpty()
+    public override fun hasNext(): Boolean = result.isNotEmpty()
 
-    override fun next(): TreeNode<T> = result.removeFirst()
+    public override fun next(): TreeNode<T> = result.removeFirst()
 }

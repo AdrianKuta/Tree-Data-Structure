@@ -6,6 +6,33 @@ All notable changes to this project are documented here. The format is based on
 
 ## [Unreleased]
 
+## [4.0.0]
+
+A breaking release that cleans up the core API and enforces an explicit public surface.
+
+### Changed (breaking)
+- `TreeNode.treeIterator` is now a read-only `val` (set it via the constructor). Use
+  `iterator(order)` or `asSequence(order)` to traverse in a different order per call.
+- `removeChild(child)` now only removes a **direct** child of the receiver (previously it removed
+  the node from its actual parent regardless). Use `child.detach()` to unhook a node from wherever
+  it lives.
+- `addChild(child)` now throws `TreeNodeException` if `child` already has a parent or if the
+  attachment would create a cycle. Call `detach()` first to move a node.
+- `clear()` no longer detaches the receiver from its own parent; it only removes its descendants.
+- `path(descendant)` now returns `List<TreeNode<T>>?` (`null` when `descendant` is the root or not a
+  descendant) instead of throwing `TreeNodeException`.
+
+### Added
+- `TreeNode.detach()` — removes a node from its parent.
+- `TreeNode.iterator(order)` — a one-shot iterator in a specific order.
+- Strict `explicitApi()` mode across all modules.
+- New `tree-structure-compose` module: a `LazyTree` composable for Compose Multiplatform.
+
+### Migration
+- `node.treeIterator = PostOrder; for (n in node) { … }` → `for (n in node.asSequence(PostOrder)) { … }`
+- `root.removeChild(deepNode)` → `deepNode.detach()`
+- `try { node.path(x) } catch (e: TreeNodeException) { … }` → `node.path(x)?.let { … }`
+
 ## [3.4.0]
 
 ### Added
@@ -44,7 +71,8 @@ All notable changes to this project are documented here. The format is based on
 ## [3.1.3]
 - iOS targets and Maven Central (Sonatype Central Portal) publishing.
 
-[Unreleased]: https://github.com/AdrianKuta/Tree-Data-Structure/compare/v3.4.0...HEAD
+[Unreleased]: https://github.com/AdrianKuta/Tree-Data-Structure/compare/v4.0.0...HEAD
+[4.0.0]: https://github.com/AdrianKuta/Tree-Data-Structure/compare/v3.4.0...v4.0.0
 [3.4.0]: https://github.com/AdrianKuta/Tree-Data-Structure/compare/v3.1.5...v3.4.0
 [3.1.5]: https://github.com/AdrianKuta/Tree-Data-Structure/compare/v3.1.3...v3.1.5
 [3.1.4]: https://github.com/AdrianKuta/Tree-Data-Structure/releases/tag/v3.1.4
