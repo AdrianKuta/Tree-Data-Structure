@@ -5,11 +5,12 @@ on:
     # We'll run this workflow when a new GitHub release is created
     types: [released]
 
+permissions:
+  contents: read
 
 jobs:
   test:
     uses: ./.github/workflows/test.yml
-    secrets: inherit
 
   publish:
     needs: test
@@ -24,8 +25,12 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
 
-        # Runs upload, and then closes & releases the repository
+        # Uploads & stages the release on Central Portal. The final "Publish"
+        # step is manual there, because build.gradle.kts sets
+        # publishToMavenCentral(automaticRelease = false).
       - name: Publish to MavenCentral
         run: ./gradlew publishToMavenCentral
         env:
@@ -33,4 +38,3 @@ jobs:
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
-          SNAPSHOT: false
