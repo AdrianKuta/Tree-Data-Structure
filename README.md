@@ -213,6 +213,15 @@ val bigger = root.addChild(ImmutableTreeNode("Asia")) // root is unchanged; bigg
 bigger.preOrder().forEach { println(it.value) } // pre/post/level-order, nodeCount(), height()
 ```
 
+## Examples
+
+A runnable `:samples` module bundles compile-checked, assertion-verified examples of the core API
+and the serialization, coroutines, and immutable modules. Run them with:
+
+```
+./gradlew :samples:run
+```
+
 ## Notes
 
 `TreeNode` is mutable and not thread-safe. Add your own synchronization if you share a tree across

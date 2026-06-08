@@ -59,6 +59,11 @@ repositories {
     mavenCentral()
 }
 
+apiValidation {
+    // :samples is a dev-facing examples module, not a published artifact, so it has no .api dump.
+    ignoredProjects.add("samples")
+}
+
 dependencies {
     // Include this module's own docs in the aggregation — DGP v2 requires the
     // aggregating project to list itself explicitly.
