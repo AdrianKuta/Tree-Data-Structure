@@ -4,7 +4,7 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [4.2.0] - 2026-06-08
 
 ### Added
 - **Android target.** The core `tree-structure` module and `tree-structure-compose` now publish an
@@ -112,7 +112,7 @@ A breaking release that cleans up the core API and enforces an explicit public s
 ## [3.1.3]
 - iOS targets and Maven Central (Sonatype Central Portal) publishing.
 
-[Unreleased]: https://github.com/AdrianKuta/Tree-Data-Structure/compare/v4.1.1...HEAD
+[4.2.0]: https://github.com/AdrianKuta/Tree-Data-Structure/compare/v4.1.1...v4.2.0
 [4.1.1]: https://github.com/AdrianKuta/Tree-Data-Structure/compare/v4.1.0...v4.1.1
 [4.1.0]: https://github.com/AdrianKuta/Tree-Data-Structure/compare/v4.0.0...v4.1.0
 [4.0.0]: https://github.com/AdrianKuta/Tree-Data-Structure/compare/v3.4.0...v4.0.0
