@@ -207,7 +207,7 @@ LazyTree(root) { node, depth, expanded, toggle ->
 }
 ```
 
-A runnable Android demo lives in the [`samples`](samples) module.
+A runnable Android demo lives in the [`samples-android`](samples-android) module.
 
 ### Immutable (`tree-structure-immutable`)
 
@@ -224,6 +224,15 @@ val root = ImmutableTreeNode("World").addChild(ImmutableTreeNode("Europe"))
 val bigger = root.addChild(ImmutableTreeNode("Asia")) // root is unchanged; bigger is a new tree
 
 bigger.preOrder().forEach { println(it.value) } // pre/post/level-order, nodeCount(), height()
+```
+
+## Examples
+
+A runnable `:samples` module bundles compile-checked, assertion-verified examples of the core API
+and the serialization, coroutines, and immutable modules. Run them with:
+
+```
+./gradlew :samples:run
 ```
 
 ## Notes

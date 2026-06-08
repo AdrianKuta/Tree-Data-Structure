@@ -1,48 +1,35 @@
 plugins {
-    alias(libs.plugins.androidApplication)
-    alias(libs.plugins.kotlinAndroid)
-    alias(libs.plugins.composeMultiplatform)
-    alias(libs.plugins.composeCompiler)
-}
-
-repositories {
-    google()
-    mavenCentral()
+    // No version: the Kotlin Gradle plugin is already on the build classpath via the root
+    // project's kotlinMultiplatform plugin, so requesting a version here would clash.
+    kotlin("jvm")
+    application
 }
 
 kotlin {
     jvmToolchain(21)
-    // Match the Kotlin bytecode target to the Java level in android.compileOptions below.
-    compilerOptions {
-        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
-    }
 }
 
-android {
-    namespace = "com.github.adriankuta.treestructure.sample"
-    compileSdk = libs.versions.androidCompileSdk.get().toInt()
+application {
+    mainClass.set("com.github.adriankuta.samples.SamplesKt")
+}
 
-    defaultConfig {
-        applicationId = "com.github.adriankuta.treestructure.sample"
-        minSdk = libs.versions.androidMinSdk.get().toInt()
-        targetSdk = libs.versions.androidCompileSdk.get().toInt()
-        versionCode = 1
-        versionName = rootProject.version.toString()
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
+repositories {
+    mavenCentral()
 }
 
 dependencies {
     implementation(project(":"))
-    implementation(project(":tree-structure-compose"))
+    implementation(project(":tree-structure-serialization"))
+    implementation(project(":tree-structure-coroutines"))
+    implementation(project(":tree-structure-immutable"))
+    // ImmutableTreeNode.children returns a PersistentList, so consumers that touch it need
+    // kotlinx.collections.immutable on their own classpath (the module declares it as implementation).
+    implementation(libs.kotlinx.collections.immutable)
 
-    implementation(compose.foundation)
-    implementation(compose.material3)
-    implementation(compose.components.uiToolingPreview)
-    implementation(libs.androidx.activity.compose)
-    debugImplementation(compose.uiTooling)
+    testImplementation(kotlin("test"))
+}
+
+// kotlin("test") auto-selects the JUnit 5 adapter when the test task uses the JUnit Platform.
+tasks.test {
+    useJUnitPlatform()
 }

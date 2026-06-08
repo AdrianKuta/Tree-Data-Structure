@@ -65,6 +65,12 @@ repositories {
     google()
 }
 
+apiValidation {
+    // Neither sample module is a published artifact, so neither has a .api dump.
+    ignoredProjects.add("samples")
+    ignoredProjects.add("samples-android")
+}
+
 dependencies {
     // Include this module's own docs in the aggregation — DGP v2 requires the
     // aggregating project to list itself explicitly.
@@ -87,11 +93,6 @@ dokka {
             remoteLineSuffix.set("#L")
         }
     }
-}
-
-apiValidation {
-    // The sample app is not a published library — exclude it from binary-compatibility validation.
-    ignoredProjects.add("samples")
 }
 
 kotlin {
