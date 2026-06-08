@@ -19,3 +19,6 @@ build/
 /.idea/jarRepositories.xml
 /.idea/deploymentTargetDropDown.xml
 /.idea/
+
+# Local superpowers working docs (design specs, plans) — not part of the repo
+docs/superpowers/
