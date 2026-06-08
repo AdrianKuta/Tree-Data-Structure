@@ -16,7 +16,7 @@ usually a better fit.
 
 ## Features
 
-- Kotlin Multiplatform: JVM, JS, Wasm, iOS, and a native host target.
+- Kotlin Multiplatform: JVM, Android, JS, Wasm, iOS, and a native host target.
 - Build trees with a `tree { child(...) }` DSL or node by node with `addChild`.
 - Pre-order, post-order, and level-order traversal, as iterators or lazy `Sequence`s.
 - Navigation: `root()`, `ancestors()`, `siblings()`, `leaves()`, `descendants()`, `isLeaf`, `degree`.
@@ -181,12 +181,23 @@ root.asFlow(TreeNodeIterators.LevelOrder).map { it.value }
 
 ### Compose UI (`tree-structure-compose`)
 
-A `LazyTree` composable for Compose Multiplatform (JVM/desktop, iOS, Wasm). Only the visible nodes
-are composed, and you decide how each node looks:
+A `LazyTree` composable for Compose Multiplatform (JVM/desktop, Android, iOS, Wasm). Only the visible
+nodes are composed.
 
 ```kotlin
 implementation("com.github.adriankuta:tree-structure-compose:4.1.1")
 ```
+
+For the common case, the no-content overload renders each node with the built-in `TreeNodeRow`
+(a clickable, indented row with a `▾`/`▸` marker — foundation-only, no Material dependency):
+
+```kotlin
+LazyTree(root)                         // sensible default
+LazyTree(root, label = { it.name })    // map a node's value to its text
+```
+
+Or supply your own row for full control:
+
 ```kotlin
 LazyTree(root) { node, depth, expanded, toggle ->
     Row(Modifier.padding(start = (depth * 16).dp).clickable(onClick = toggle)) {
@@ -195,6 +206,8 @@ LazyTree(root) { node, depth, expanded, toggle ->
     }
 }
 ```
+
+A runnable Android demo lives in the [`samples`](samples) module.
 
 ### Immutable (`tree-structure-immutable`)
 

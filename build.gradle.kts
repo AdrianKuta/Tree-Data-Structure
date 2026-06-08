@@ -7,6 +7,11 @@ plugins {
     alias(libs.plugins.binaryCompatibilityValidator)
     alias(libs.plugins.kover)
     signing
+    alias(libs.plugins.androidLibrary)
+    // Loaded once here (with a known version) so the Android application/library variants can be
+    // applied across subprojects without the "already on the classpath with an unknown version" clash.
+    alias(libs.plugins.androidApplication) apply false
+    alias(libs.plugins.kotlinAndroid) apply false
 }
 
 val PUBLISH_GROUP_ID = "com.github.adriankuta"
@@ -57,6 +62,7 @@ mavenPublishing {
 
 repositories {
     mavenCentral()
+    google()
 }
 
 dependencies {
@@ -83,11 +89,25 @@ dokka {
     }
 }
 
+apiValidation {
+    // The sample app is not a published library — exclude it from binary-compatibility validation.
+    ignoredProjects.add("samples")
+}
+
 kotlin {
     explicitApi()
     jvmToolchain(21)
 
     jvm()
+
+    androidTarget {
+        publishLibraryVariants("release")
+        // Build the Android variant at JVM 17 so Android consumers (JVM 11/17) can inline the
+        // library's inline DSL (`tree { }`) — they cannot inline the default JVM-21 bytecode.
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+        }
+    }
 
     js(IR) {
         browser()
@@ -119,5 +139,17 @@ kotlin {
         commonTest.dependencies {
             implementation(kotlin("test"))
         }
+    }
+}
+
+android {
+    namespace = "com.github.adriankuta.datastructure.tree"
+    compileSdk = libs.versions.androidCompileSdk.get().toInt()
+    defaultConfig {
+        minSdk = libs.versions.androidMinSdk.get().toInt()
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 }

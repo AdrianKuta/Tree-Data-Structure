@@ -6,6 +6,19 @@ All notable changes to this project are documented here. The format is based on
 
 ## [Unreleased]
 
+### Added
+- **Android target.** The core `tree-structure` module and `tree-structure-compose` now publish an
+  `-android` variant (`minSdk` 21), so both can be consumed directly in Android projects.
+- `tree-structure-compose`: a foundation-only `TreeNodeRow` composable — a sensible default node row
+  (clickable, indented, with a `▾`/`▸` marker and no Material dependency) — plus a no-content
+  `LazyTree(root, label = …)` overload that renders each node with it. The existing lambda overload
+  is unchanged.
+- A runnable Android sample app in the new `samples` module, with `@Preview` composables.
+
+### Changed
+- Upgraded the Gradle wrapper to 8.10.2 and introduced Android Gradle Plugin 8.7.2 (`compileSdk` 35).
+  No source or behavior changes to existing targets.
+
 ## [4.1.1] - 2026-06-08
 
 ### Fixed

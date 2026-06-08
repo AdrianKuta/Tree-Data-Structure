@@ -1,4 +1,0 @@
-public final class com/github/adriankuta/datastructure/tree/compose/LazyTreeKt {
-	public static final fun LazyTree (Lcom/github/adriankuta/datastructure/tree/TreeNode;Landroidx/compose/ui/Modifier;ZLkotlin/jvm/functions/Function6;Landroidx/compose/runtime/Composer;II)V
-}
-

@@ -5,6 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.github.adriankuta.datastructure.tree.TreeNode
 
 /**
@@ -46,6 +48,35 @@ public fun <T> LazyTree(
                 expansion[node] = !isExpanded(node)
             }
         }
+    }
+}
+
+/**
+ * Convenience overload of [LazyTree] that renders each node with the built-in [TreeNodeRow], so the
+ * common case is a single call:
+ *
+ * ```
+ * LazyTree(root)
+ * ```
+ *
+ * Use the overload that takes a `nodeContent` lambda when you need full control over a node's look.
+ *
+ * @param root the root of the tree to display.
+ * @param modifier the [Modifier] applied to the underlying [LazyColumn].
+ * @param initiallyExpanded whether nodes start expanded.
+ * @param indent the horizontal indentation applied per depth level.
+ * @param label maps a node's value to the text shown. Defaults to `toString()`.
+ */
+@Composable
+public fun <T> LazyTree(
+    root: TreeNode<T>,
+    modifier: Modifier = Modifier,
+    initiallyExpanded: Boolean = true,
+    indent: Dp = 16.dp,
+    label: (T) -> String = { it.toString() },
+) {
+    LazyTree(root, modifier, initiallyExpanded) { node, depth, expanded, toggle ->
+        TreeNodeRow(node, depth, expanded, toggle, indent = indent, label = label)
     }
 }
 
