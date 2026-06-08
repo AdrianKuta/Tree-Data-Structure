@@ -23,7 +23,7 @@ jobs:
         include:
           - name: JVM / JS / Wasm / Native + API check
             os: ubuntu-latest
-            tasks: jvmTest jsNodeTest wasmJsNodeTest nativeTest apiCheck
+            tasks: jvmTest jsNodeTest wasmJsNodeTest nativeTest apiCheck :samples:test :samples:run
           - name: iOS
             os: macos-latest
             tasks: iosSimulatorArm64Test
