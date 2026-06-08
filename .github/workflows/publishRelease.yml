@@ -16,7 +16,10 @@ jobs:
     needs: test
     name: Publish Production
     environment: production
-    runs-on: ubuntu-latest
+    # MUST be macOS: Kotlin/Native Apple targets (iosArm64/iosX64/iosSimulatorArm64) can only be
+    # built on a macOS host. On a Linux runner those tasks are silently skipped, so the iOS klibs
+    # never get uploaded (the build still goes green) — exactly what happened for 3.1.5–4.1.0.
+    runs-on: macos-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v4

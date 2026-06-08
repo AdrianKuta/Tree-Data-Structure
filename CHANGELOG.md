@@ -6,6 +6,14 @@ All notable changes to this project are documented here. The format is based on
 
 ## [Unreleased]
 
+## [4.1.1] - 2026-06-08
+
+### Fixed
+- Restored the Apple/iOS artifacts (`iosArm64`, `iosX64`, `iosSimulatorArm64`) for the core and every
+  module. The release workflow published from a Linux runner, which cannot build Kotlin/Native Apple
+  targets, so they were silently omitted from 3.1.5–4.1.0; publishing now runs on macOS. No API or
+  behavior changes from 4.1.0 — this is a packaging fix only.
+
 ## [4.1.0] - 2026-06-07
 
 ### Added
@@ -91,7 +99,8 @@ A breaking release that cleans up the core API and enforces an explicit public s
 ## [3.1.3]
 - iOS targets and Maven Central (Sonatype Central Portal) publishing.
 
-[Unreleased]: https://github.com/AdrianKuta/Tree-Data-Structure/compare/v4.1.0...HEAD
+[Unreleased]: https://github.com/AdrianKuta/Tree-Data-Structure/compare/v4.1.1...HEAD
+[4.1.1]: https://github.com/AdrianKuta/Tree-Data-Structure/compare/v4.1.0...v4.1.1
 [4.1.0]: https://github.com/AdrianKuta/Tree-Data-Structure/compare/v4.0.0...v4.1.0
 [4.0.0]: https://github.com/AdrianKuta/Tree-Data-Structure/compare/v3.4.0...v4.0.0
 [3.4.0]: https://github.com/AdrianKuta/Tree-Data-Structure/compare/v3.1.5...v3.4.0
